@@ -27,7 +27,7 @@ print(it_companies)
 #    Discard no levanta errores de metodo cuando se le indica un objeto que no exista en el set
 """
 #Exercises: Level 2
-
+"""
 #    Join A and B
 AUB= A.union(B)
 print('Set A: ', A)
@@ -57,9 +57,32 @@ print('Diferencia simetrica entre A y B: ',symetric_diff)
 del A
 del B
 print('Set A: ',A,' Set B: ',B)
-
+"""
 #Exercises: Level 3
-
+"""
 #    Convert the ages to a set and compare the length of the list and the set, which one is bigger?
+age
+set_age=set(age)
+print(set_age)
+lst_len=int(len(age))
+set_len=int(len(set_age))
+if lst_len>set_len:
+    print('La lista(',lst_len ,') es más larga que el set(', set_len,')')
+else:
+    print('El set(',set_len ,') es más largo que la lista(', lst_len,')')
+
 #    Explain the difference between the following data types: string, list, tuple and set
-#    I am a teacher and I love to inspire and teach people. How many unique words have been used in the sentence? Use the split methods and set to get the unique words.
+#Los strings son valores de texto, no se pueden calcular
+#Las listas son un conjunto de objetos de una misma o distinta naturaleza y la lista es modificable
+#Tuple es como las listas pero son inmutables, no se pueden modificar
+#El set es una lista de items unicos, es decir, que no se pueden repetir dentro de la misma. Y a los que se les puede aplicar analisis de conjuntos matematicos
+"""
+#    I am a teacher and I love to inspire and teach people.
+# How many unique words have been used in the sentence? Use the split methods and set to get the unique words.
+"""
+frase=('I am a teacher and I love to inspire and teach people')
+frase_separada= frase.split()
+print(frase_separada,'se compone de: ',len(frase_separada),' palabras')
+set_frase=set(frase_separada)
+print('hay un total de: ',len(set_frase),' de palabras unicas')
+"""
