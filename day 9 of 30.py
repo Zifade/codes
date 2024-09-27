@@ -1,11 +1,58 @@
 #Exercises: Level 1
 
 #Get user input using input(“Enter your age: ”). If user is 18 or older, give feedback: You are old enough to drive. If below 18 give feedback to wait for the missing amount of years.
+"""
+usuario_edad= input('Ingresa tu edad: ')
+int_usuario_edad= int(usuario_edad)
+if int_usuario_edad>18 :
+
+    print('Tienes la edad suficiente para aprender a manejar')
+if int_usuario_edad<18 :
+    edad_faltante=18-int_usuario_edad
+    print('No ienes la edad suficiente, intenta aprender en:',edad_faltante,'años más')
+"""
 
 #Compare the values of my_age and your_age using if … else. Who is older (me or you)? Use input(“Enter your age: ”) to get the age as input. You can use a nested condition to print 'year' for 1 year difference in age, 'years' for bigger differences, and a custom text if my_age = your_age.
+"""
+mi_edad=25
+usuario_edad= input('Ingresa tu edad: ')
+tu_edad=int(usuario_edad)
+if mi_edad>tu_edad:
+    diff_positiva=mi_edad-tu_edad
+    if diff_positiva==1:
+        print('Soy',diff_positiva,'año mas grande que tu')
+    if diff_positiva>1:
+        print('Soy',diff_positiva,'años mas grande que tu')
+    else:
+        print('...Que?')
+if mi_edad<tu_edad:
+    diff_negativa=tu_edad-mi_edad
+    if diff_negativa==1:
+        print('Eres',diff_negativa,'año mayor que yo')
+    if diff_negativa>1:
+        print('Eres',diff_negativa,'años mayor que yo')
+    else:
+        print('...Que?')
+if mi_edad==tu_edad:
+    print('BRIIIIGIIDOOOOOO')
+"""
 
 #Get two numbers from the user using input prompt. If a is greater than b return a is greater than b, if a is less b return a is smaller than b, else a is equal to b.
+"""
+user_numero_a=input('Ingresa un numero: ')
+user_numero_b=input('Ingresa un numero otra vez: ')
+numero_a=int(user_numero_a)
+numero_b=int(user_numero_b)
 
+if numero_a>numero_b:
+    print('El numero A es más grande que el numero B')
+if numero_b<numero_a:
+    print('El numero B es más grande que el numero A')
+if numero_a==numero_b:
+    print('... Ingresaste dos veces el mismo numero?')
+else:
+    print('... Que hiciste?')
+"""
 #Exercises: Level 2
 
 #Write a code which gives grade to students according to theirs scores
