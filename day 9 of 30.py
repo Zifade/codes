@@ -63,11 +63,57 @@ else:
 50-59, D
 0-49, F
 """
+"""
+nota_alumno= input('Ingresa tu nota: ')
+puntaje= int(nota_alumno)
+if 0<=puntaje<50:
+    print('Tu nota es "F"')
+elif 49<puntaje<60:
+    print('Tu nota es "D"')
+elif 59<puntaje<70:
+    print('Tu nota es "C"')
+elif 69<puntaje<80:
+    print('Tu nota es "B"')
+elif 79<puntaje<101:
+    print('Tu nota es "A"')
+else:
+    print('Ingresaste mal tu nota.')
+"""
+
 #Check if the season is Autumn, Winter, Spring or Summer. If the user input is: September, October or November, the season is Autumn. December, January or February, the season is Winter. March, April or May, the season is Spring June, July or August, the season is Summer
+"""
+mes_usuario=input('En que mes del año estas? ')
+otoño=('septiembre','octubre','noviembre')
+invierno=('diciembre','enero','febrero')
+primavera=('marzo','abril','mayo')
+verano=('junio','julio','agosto')
+mes_user_low=mes_usuario.lower()
+if mes_user_low in otoño:
+    print('Estas en la estacion de otoño')
+if mes_user_low in invierno:
+    print('Estas en la estacion de invierno')
+if mes_user_low in primavera:
+    print('Estas en la estacion de primavera')
+if mes_user_low in verano:
+    print('Estas en la estacion de verano')
+else:
+    print('Ingresaste mal el mes')
+"""
 
 #The following list contains some fruits:
 fruits = ['banana', 'orange', 'mango', 'lemon']
 #If a fruit doesn't exist in the list add the fruit to the list and print the modified list. If the fruit exists print('That fruit already exist in the list')
+"""
+user_fruta=input('Ingresa una fruta: ')
+user_fruta_low=user_fruta.lower()
+if user_fruta_low in fruits:
+    print('Esta fruta ya existe!')
+    print(fruits)
+else:
+    fruits.append(user_fruta_low)
+    print('Hemos añadido tu fruta!')
+    print(fruits)
+"""
 
 #Exercises: Level 3
 #Here we have a person dictionary. Feel free to modify it!
