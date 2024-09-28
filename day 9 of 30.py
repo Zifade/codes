@@ -130,9 +130,42 @@ person={
     }
     }
 # * Check if the person dictionary has skills key, if so print out the middle skill in the skills list.
+"""
+print('Tiene habilidades? ','skills' in person)
+print('la habilidad de enmedio es: ',(person['skills'][(int(len(person['skills'])))//2]))
+"""
+
 # * Check if the person dictionary has skills key, if so check if the person has 'Python' skill and print out the result.
-# * If a person skills has only JavaScript and React, print('He is a front end developer'), if the person skills has Node, Python, MongoDB, print('He is a backend developer'), if the person skills has React, Node and MongoDB, Print('He is a fullstack developer'), else print('unknown title') - for more accurate results more conditions can be nested!
-# * If the person is married and if he lives in Finland, print the information in the following format:
+"""
+print('Tiene habilidades? ','skills' in person)
+print('Habilidad en python? ','Python' in person['skills'])
+"""
 
+# If the person skills has only JavaScript and React, print('He is a front end developer'),
+# if the person skills has Node, Python, MongoDB, print('He is a backend developer'),
+# if the person skills has React, Node and MongoDB, Print('He is a fullstack developer'),
+# else print('unknown title') - for more accurate results more conditions can be nested!
+"""
+front_dev=('JavaScript', 'React')
+back_dev=('Python', 'MongoDB')
+full_dev=('React','Node','MongoDB')
+if front_dev==person['skills']:
+    print('He is a front end developer')
+elif back_dev[0] in person['skills'] :
+    if back_dev[1] in person['skills']:
+        print('He is a backend developer')
+elif full_dev[0] in person['skills']:
+        if full_dev[1] in person['skills']:
+            if full_dev[3] in person['skills']:
+                print('He is a fullstack developer')
+else:
+    print('unknown title')
+"""
 
+# If the person is married and if he lives in Finland, print in the following format: Asabeneh Yetayeh lives in Finland. He is married.
+"""
+if person['is_marred']==True:
+    if person['country']=='Finland':
+        print(person['first_name'],person['last_name'],'vive en',person['country'],'Y está casado')
+"""
 
