@@ -1,7 +1,28 @@
 #Exercises: Level 1
 
 #Iterate 0 to 10 using for loop, do the same using while loop.
+number=[0,1,2,3,4,5,6,7,8,9,10]
+"""
+number=[0,1,2,3,4,5,6,7,8,9,10]
+for number in number:
+    print('for number:',number)
+i=0
+while i<11:
+    print('while number:',i)
+    i= i+1
+"""
+
 #Iterate 10 to 0 using for loop, do the same using while loop.
+"""
+number.reverse()
+for number in number:
+    print('Reverse for number:', number)
+i=10
+while i>-1:
+    print('Reverse while number:',i)
+    i=i-1
+"""
+
 #Write a loop that makes seven calls to print(), so we get on the output the following triangle:
 
 #
@@ -11,6 +32,12 @@
 #####
 ######
 #######
+"""
+i=0
+while i<8:
+    print('#'*i)
+    i=i+1
+"""
 #Use nested loops to create the following:
 # # # # # # # #
 # # # # # # # #
@@ -20,6 +47,12 @@
 # # # # # # # #
 # # # # # # # #
 # # # # # # # #
+"""
+i=0
+while i<9:
+    print('# # # # # # # #')
+    i=i+1
+"""
 #Print the following pattern
 """
 0 x 0 = 0
@@ -34,12 +67,30 @@
 9 x 9 = 81
 10 x 10 = 100
 """
-
-
-
+"""
+i=0
+while i <11:
+    print(i,'X',i,'=',i*i)
+    i=i+1
+"""
 #Iterate through the list, ['Python', 'Numpy','Pandas','Django', 'Flask'] using a for loop and print out the items.
+"""
+dev_env=['Python', 'Numpy','Pandas','Django', 'Flask']
+for dev_env in dev_env:
+    print(dev_env)
+"""
 #Use for loop to iterate from 0 to 100 and print only even numbers
+"""
+for num in range(0,100):
+    if num%2==0:
+        print(num)
+"""
 #Use for loop to iterate from 0 to 100 and print only odd numbers
+"""
+for num in range(0,100):
+    if num%2==1:
+        print(num)
+"""
 
 #Exercises: Level 2
 
@@ -57,4 +108,3 @@
     #What are the total number of languages in the data
     #Find the ten most spoken languages from the data
     #Find the 10 most populated countries in the world
-
