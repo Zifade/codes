@@ -1,3 +1,7 @@
+from countries import countries
+from countries_data import paises
+from collections import Counter
+
 #Exercises: Level 1
 
 #Iterate 0 to 10 using for loop, do the same using while loop.
@@ -95,16 +99,79 @@ for num in range(0,100):
 #Exercises: Level 2
 
 #Use for loop to iterate from 0 to 100 and print the sum of all numbers.
-#The sum of all numbers is 5050.
+"""
+sum_num=0
+for num in range(0,101):
+    sum_num = num+sum_num
+    print(sum_num)
+"""
 
 #Use for loop to iterate from 0 to 100 and print the sum of all evens and the sum of all odds.
-#The sum of all evens is 2550. And the sum of all odds is 2500.
+"""
+sum_even=0
+sum_odd=0
+for num in range(0,101):
+    if num%2==1:
+        sum_odd = num+sum_odd
+        print('sum odd numbers:', sum_odd)
+    if num%2==0:
+        sum_even = num+sum_even
+        print('sum even numbers: ', sum_even)
+"""
 
 #Exercises: Level 3
 
 #Go to the data folder and use the countries.py file. Loop through the countries and extract all the countries containing the word land.
+"""
+for country in countries:
+    print(country)
+"""
+
 #This is a fruit list, ['banana', 'orange', 'mango', 'lemon'] reverse the order using loop.
+"""
+fruit=['banana', 'orange', 'mango', 'lemon']
+cantidad_frutas= int(len(fruit))
+i=-1
+while i>=-cantidad_frutas:
+    print(fruit[i])
+    i= i-1
+"""
+
 #Go to the data folder and use the countries_data.py file.
     #What are the total number of languages in the data
+"""
+idiomas_unicos = set()
+for pais in paises:
+    idiomas = pais.get('languages', [])
+    idiomas_unicos.update(idiomas)
+print('hay un total de:',len(idiomas_unicos),'idiomas')
+"""
     #Find the ten most spoken languages from the data
+"""
+n=10
+contador_idiomas = Counter()
+for pais in paises:
+    idiomas = pais.get('languages', [])
+    contador_idiomas.update(idiomas)
+idiomas_mas_comunes = contador_idiomas.most_common(n)
+top_10_idiomas=idiomas_mas_comunes
+for idioma, frecuencia in top_10_idiomas:
+    print(f"{idioma}: hablado en {frecuencia} países")
+"""
+
     #Find the 10 most populated countries in the world
+"""
+def encontrar_paises_mas_poblados(paises, n=10):
+    paises_ordenados = sorted(paises, key=lambda x: x.get('population', 0), reverse=True)
+    top_n_paises = paises_ordenados[:n]
+    return top_n_paises
+top_10_paises = encontrar_paises_mas_poblados(paises, 10)
+print("Los 10 países con mayor población son:")
+for i, pais in enumerate(top_10_paises, 1):
+    nombre = pais.get('name', 'Desconocido')
+    poblacion = pais.get('population', 'Desconocida')
+    print(f"{i}. {nombre}: {poblacion:,} habitantes")
+"""
+
+
+
