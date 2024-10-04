@@ -33,10 +33,76 @@ print(add_all_nums(4,6,8,4,2))
 """
 
 #Temperature in °C can be converted to °F using this formula: °F = (°C x 9/5) + 32. Write a function which converts °C to °F, convert_celsius_to-fahrenheit.
+"""
+def celsius_to_farenheit(c):
+    farenheit= (c*9/5)+32
+    return farenheit
+print('Los farenheit son: ',celsius_to_farenheit(int(input('Ingresa los grados Celsius: '))))
+"""
+
 #Write a function called check-season, it takes a month parameter and returns the season: Autumn, Winter, Spring or Summer.
+"""
+def check_season(mes_usuario):
+    otoño=('septiembre','octubre','noviembre')
+    invierno=('diciembre','enero','febrero')
+    primavera=('marzo','abril','mayo')
+    verano=('junio','julio','agosto')
+    mes_user_low=mes_usuario.lower()
+    if mes_user_low in otoño:
+        print('Estas en la estacion de otoño')
+    elif mes_user_low in invierno:
+        print('Estas en la estacion de invierno')
+    elif mes_user_low in primavera:
+        print('Estas en la estacion de primavera')
+    elif mes_user_low in verano:
+        print('Estas en la estacion de verano')
+    else:
+        print('Ingresaste mal el mes')
+    return ''
+print(check_season(input('En que mes del año estas? ')))
+"""
+
 #Write a function called calculate_slope which return the slope of a linear equation
+"""
+def calculate_slope(y1,y2):
+    slope= y2-y1
+    return slope
+print(calculate_slope(int(input('Ingresa Y1: ')),int(input('Ingresa Y2: '))))
+"""
+
 #Quadratic equation is calculated as follows: ax² + bx + c = 0. Write a function which calculates solution set of a quadratic equation, solve_quadratic_eqn.
+"""
+import math
+
+def solve_quadratic_eqn(a, b, c):
+    if a == 0:
+        if b == 0:
+            return "No es una ecuación cuadrática y no tiene solución única."
+        else:
+            return f"La ecuación es lineal con solución: {-c/b}"
+    discriminante = b**2 - 4*a*c
+    if discriminante > 0:
+        x1 = (-b + math.sqrt(discriminante)) / (2*a)
+        x2 = (-b - math.sqrt(discriminante)) / (2*a)
+        return f"Dos soluciones reales: x1 = {x1}, x2 = {x2}"
+    elif discriminante == 0:
+        x = -b / (2*a)
+        return f"Una solución real (raíz doble): x = {x}"
+    else:
+        real = -b / (2*a)
+        imag = math.sqrt(-discriminante) / (2*a)
+        return f"Dos soluciones complejas: x1 = {real} + {imag}i, x2 = {real} - {imag}i"
+print(solve_quadratic_eqn(1, 5, 6))
+"""
+
 #Declare a function named print_list. It takes a list as a parameter and it prints out each element of the list.
+"""
+def print_list(list=[]):
+    for list in list:
+        print(list)
+print(print_list([1,5,3,2,5]))
+"""
+#---------------------------------------------------------------------------------------------------------------------------
 #Declare a function named reverse_list. It takes an array as a parameter and it returns the reverse of the array (use loops).
 """
 print(reverse_list([1, 2, 3, 4, 5]))
