@@ -1,8 +1,37 @@
 #Exercises: Level 1
 
 #Declare a function add_two_numbers. It takes two parameters and it returns a sum.
+"""
+def suma(num1, num2):
+    total= num1+ num2
+    return total
+print(suma(int(input('Escribe numero 1 de la suma: ')),int(input('Escribe numero 2 de la suma: '))))
+"""
+
 #Area of a circle is calculated as follows: area = π x r x r. Write a function that calculates area_of_circle.
+"""
+def area_circulo(radio):
+    PI= 3.14
+    area= PI*radio*radio
+    return area
+print(area_circulo(int(input('Ingresa radio del cirulo: '))))
+"""
+
 #Write a function called add_all_nums which takes arbitrary number of arguments and sums all the arguments. Check if all the list items are number types. If not do give a reasonable feedback.
+"""
+def add_all_nums(*nums):
+    suma_num=0
+    for i in nums:
+        try:
+            validate= int(i)
+        except ValueError:
+            print('Agregaste caracteres que no son numeros.')
+            break
+        suma_num+=i
+    return suma_num
+print(add_all_nums(4,6,8,4,2))
+"""
+
 #Temperature in °C can be converted to °F using this formula: °F = (°C x 9/5) + 32. Write a function which converts °C to °F, convert_celsius_to-fahrenheit.
 #Write a function called check-season, it takes a month parameter and returns the season: Autumn, Winter, Spring or Summer.
 #Write a function called calculate_slope which return the slope of a linear equation
