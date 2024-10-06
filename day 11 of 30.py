@@ -102,22 +102,34 @@ def print_list(list=[]):
         print(list)
 print(print_list([1,5,3,2,5]))
 """
-#---------------------------------------------------------------------------------------------------------------------------
+
 #Declare a function named reverse_list. It takes an array as a parameter and it returns the reverse of the array (use loops).
 """
+def reverse_list(list=[]):
+    list.reverse()
+    for list in list:
+        print('Reverse for number:', list)
+    return null
 print(reverse_list([1, 2, 3, 4, 5]))
-# [5, 4, 3, 2, 1]
-print(reverse_list1(["A", "B", "C"]))
-# ["C", "B", "A"]
 """
+
 #Declare a function named capitalize_list_items. It takes a list as a parameter and it returns a capitalized list of items
+"""
+def capitalize_list_items(list=[]):
+    for list in list:
+        print(list.capitalize())
+    return ''
+print(capitalize_list_items(['cosas','palabra','manzana','rio']))
+"""
 #Declare a function named add_item. It takes a list and an item parameters. It returns a list with the item added at the end.
 """
-food_staff = ['Potato', 'Tomato', 'Mango', 'Milk'];
-print(add_item(food_staff, 'Meat'))     # ['Potato', 'Tomato', 'Mango', 'Milk','Meat'];
-numbers = [2, 3, 7, 9];
-print(add_item(numbers, 5))      [2, 3, 7, 9, 5]
+food_staff = ['Potato', 'Tomato', 'Mango', 'Milk']
+def add_item(item,list=[]):
+    list.append(item)
+    return list
+print(add_item('cereal', food_staff))
 """
+
 #Declare a function named remove_item. It takes a list and an item parameters. It returns a list with the item removed from it.
 """
 food_staff = ['Potato', 'Tomato', 'Mango', 'Milk'];
