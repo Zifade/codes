@@ -132,29 +132,97 @@ print(add_item('cereal', food_staff))
 
 #Declare a function named remove_item. It takes a list and an item parameters. It returns a list with the item removed from it.
 """
-food_staff = ['Potato', 'Tomato', 'Mango', 'Milk'];
-print(remove_item(food_staff, 'Mango'))  # ['Potato', 'Tomato', 'Milk'];
-numbers = [2, 3, 7, 9];
-print(remove_item(numbers, 3))  # [2, 7, 9]
+food_staff = ['Potato', 'Tomato', 'Mango', 'Milk']
+def remove_item(item,list=[]):
+    list.remove(item)
+    return list
+print(remove_item('Mango',food_staff))
 """
+
 #Declare a function named sum_of_numbers. It takes a number parameter and it adds all the numbers in that range.
 """
+def sum_of_numbers(tope):
+    suma_total=0
+    for i in range(tope+1):
+        suma_total+=i
+    return suma_total
+
 print(sum_of_numbers(5))  # 15
-print(sum_all_numbers(10)) # 55
-print(sum_all_numbers(100)) # 5050
+print(sum_of_numbers(10))
+print(sum_of_numbers(100))  
 """
+
 #Declare a function named sum_of_odds. It takes a number parameter and it adds all the odd numbers in that range.
 #Declare a function named sum_of_even. It takes a number parameter and it adds all the even numbers in that - range.
+"""
+def sum_of_odds(tope):
+    sum_odd=0
+    for num in range(0,tope+1):
+        if num%2==1:
+            sum_odd=+num
+    return sum_odd
+def sum_of_even(tope):
+    sum_even=0
+    for num in range(0,tope+1):
+        if num%2==0:
+            sum_even=+num
+    return sum_even
+print(sum_of_odds(50))
+print(sum_of_even(50))
+"""
 
 #Exercises: Level 2
 
 #Declare a function named evens_and_odds . It takes a positive integer as parameter and it counts number of evens and odds in the number.
 """
+def evens_and_odds(tope):
+    count_even=0
+    count_odd=0
+    for num in range(0,tope+1):
+        if num%2==1:
+            count_odd+=1
+        if num%2==0:
+            count_even+=1   
+    total='Hay ',count_even,' numeros pares, y ',count_odd,' numeros impares'
+    return total
 print(evens_and_odds(100))
-# The number of odds are 50.
-# The number of evens are 51.
 """
 #Call your function factorial, it takes a whole number as a parameter and it return a factorial of the number
+"""
+def factorize(n):
+    factors = {}
+    d = 2
+    while n > 1:
+        while n % d == 0:
+            if d in factors:
+                factors[d] += 1
+            else:
+                factors[d] = 1
+            n //= d
+        d += 1
+        if d * d > n:
+            if n > 1:
+                factors[n] = 1
+            break
+    return factors
+
+# Función auxiliar para imprimir los factores de forma legible
+def print_factorization(n):
+    factors = factorize(n)
+    result = []
+    for factor, exponent in factors.items():
+        if exponent == 1:
+            result.append(str(factor))
+        else:
+            result.append(f"{factor}^{exponent}")
+    return " * ".join(result)
+
+# Ejemplos de uso
+numbers = [12, 56, 100, 999]
+for num in numbers:
+    print(f"{num} = {print_factorization(num)}")
+"""
+
 #Call your function is_empty, it takes a parameter and it checks if it is empty or not
 #Write different functions which take lists. They should calculate_mean, calculate_median, calculate_mode, calculate_range, calculate_variance, calculate_std (standard deviation).
 
