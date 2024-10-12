@@ -224,15 +224,120 @@ for num in numbers:
 """
 
 #Call your function is_empty, it takes a parameter and it checks if it is empty or not
+"""
+def is_empty(var):
+    if var == "":
+        print('La varaible esta vacia.')
+    else:
+        print('La variable tiene contenido:', var)
+    return ""
+print(is_empty("cosas"))
+"""
 #Write different functions which take lists. They should calculate_mean, calculate_median, calculate_mode, calculate_range, calculate_variance, calculate_std (standard deviation).
+"""
+numeros=[2,4,65,3,67,21,3,27,15,9,5,24,5,3,31,15]
+import math
+def calculate_mean(list=[]):
+    mean=0
+    sum=0
+    for i in list:
+        sum+=i
+    mean=sum/int(len(list))
+    return mean
+
+def calculate_median(list=[]):
+    median=0
+    list.sort()
+    median=list[int(len(list))//2]
+    return median
+
+def calculate_mode(list=[]):
+    from collections import Counter
+    conteo = Counter(list)
+    max_frecuencia = max(conteo.values())
+    mode = [num for num, freq in conteo.items() if freq == max_frecuencia]
+    return mode[0] if len(mode) == 1 else mode
+
+def calculate_range(list=[]):
+    list.sort()
+    min_num=list[0]
+    max_num=list[-1]
+    range_num='el rango de numeros va entre ',min_num,' y ',max_num
+    return range_num
+
+def calculate_variance(list=[]):
+    n = len(list)
+    media = sum(list) / n
+    suma_cuadrados_diff = sum((x - media) ** 2 for x in list)
+    variance = suma_cuadrados_diff / n
+    return variance
+
+def calculate_std(list=[]):
+    varianza=calculate_variance(list)
+    std = math.sqrt(varianza)
+    return std
+"""
+"""
+print(calculate_mean(numeros))
+print(calculate_median(numeros))
+print(calculate_mode(numeros))
+print(calculate_range(numeros))
+print(calculate_variance(numeros))
+print(calculate_std(numeros))
+"""
 
 #Exercises: Level 3
 
 #Write a function called is_prime, which checks if a number is prime.
-#Write a functions which checks if all items are unique in the list.
-#Write a function which checks if all the items of the list are of the same data type.
-#Write a function which check if provided variable is a valid python variable
-#Go to the data folder and access the countries-data.py file.
+"""
+def primo(num):
+    for n in range(2, num):
+        if num % n == 0:
+            print("No es primo", n, "es divisor")
+            return False
+    return num," Es un numero primo"
+print(primo(7))
+"""
 
-#Create a function called the most_spoken_languages in the world. It should return 10 or 20 most spoken languages in the world in descending order
-#Create a function called the most_populated_countries. It should return 10 or 20 most populated countries in descending order.
+#Write a functions which checks if all items are unique in the list.
+"""
+def check_dobles_list(list=[]):
+    elementos_vistos=[]
+    elementos_repetidos=[]
+    for i in list:
+        if i in elementos_vistos:
+            elementos_repetidos.append(i)
+        else:
+            elementos_vistos.append(i)
+    if elementos_repetidos==[]:
+        check= 'No se repiten elementos'
+    else:
+        check= 'Se repite el elemento', elementos_repetidos
+    return check
+
+print(check_dobles_list([3,4,6,8,9,12,45,68,64,79,85,22,18,15]))
+"""
+
+#Write a function which checks if all the items of the list are of the same data type.
+"""
+def check_type(list=[]):
+    primer_tipo = type(list[0])
+    todos_mismo_tipo = all(isinstance(elemento, primer_tipo) for elemento in list)
+    if todos_mismo_tipo:
+        return f"Todos los elementos son del mismo tipo: {primer_tipo.__name__}"
+    else:
+        tipos_diferentes = set(type(elemento).__name__ for elemento in list)
+        return f"Los elementos son de diferentes tipos: {', '.join(tipos_diferentes)}"
+print(check_type([3,2,5]))
+print(check_type([3,'2',5]))
+"""
+#Write a function which check if provided variable is a valid python variable
+def check_variable(variable_name):
+    if variable_name in locals() or variable_name in globals():
+        return f"La variable '{variable_name}' está definida"
+    else:
+        return f"La variable '{variable_name}' no está definida"
+
+x = 10
+print(check_variable('x'))
+print(check_variable('y'))  
