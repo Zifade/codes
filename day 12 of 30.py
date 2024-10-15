@@ -1,32 +1,34 @@
 #Exercises: Level 1
-
+from random import *
+import string
 #Write a function which generates a six digit/character random_user_id. 
 """
-print(random_user_id());
-  '1ee33d'
+def random_user_id(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+print(random_user_id())
 """
+
 #Modify the previous task. Declare a function named user_id_gen_by_user. It doesn’t take any parameters but it takes two inputs using input().
 #One of the inputs is the number of characters and the second input is the number of IDs which are supposed to be generated.
 """
-print(user_id_gen_by_user()) # user input: 5 5
-#output:
-#kcsy2
-#SMFYb
-#bWmeq
-#ZXOYh
-#2Rgxf
-   
-print(user_id_gen_by_user()) # 16 5
-#1GCSgPLMaBAVQZ26
-#YD7eFwNQKNs7qXaT
-#ycArC5yrRupyG00S
-#UbGxOFI7UXSWAyKN
-#dIV0SSUTgAdKwStr
+def random_user_id(size=int(input('Ingresa la cantidad de digitos: ')), qty=int(input('Ingresa la cantidad de ids: ')),chars=string.ascii_uppercase + string.digits):
+    ids=[]
+    for a in range(0,qty):
+        ids.append(''.join(random.choice(chars) for _ in range(size)))
+    return ids
+
+print(random_user_id())
 """
+
 #Write a function named rgb_color_gen. It will generate rgb colors (3 values ranging from 0 to 255 each).
 """
+def rgb_color_gen():
+    rgb=[]
+    for num in range(0,3):
+      rgb.append(randrange(0,255))
+    return rgb
 print(rgb_color_gen())
-# rgb(125,244,255) - the output should be in this form
 """
 
 #Exercises: Level 2
