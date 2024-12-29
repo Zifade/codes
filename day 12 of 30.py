@@ -36,16 +36,80 @@ print(rgb_color_gen())
 #Write a function list_of_hexa_colors which returns any number of hexadecimal colors in an array
 # (six hexadecimal numbers written after #. Hexadecimal numeral system is made out of 16 symbols,
 # 0-9 and first 6 letters of the alphabet, a-f. Check the task 6 for output examples).
+"""
+def list_of_hexa_color(count):
+    hex_array=[]
+    i=0
+    while i<count:
+        color = randrange(0, 2**24)
+        hex_color= hex(color)
+        std_hex="#"+hex_color[2:]
+        hex_array.append(std_hex)
+        i+=1
+    return hex_array
+print(list_of_hexa_color(2))
+"""
+
 #Write a function list_of_rgb_colors which returns any number of RGB colors in an array.
+"""
+def rgb_color_gen(count):
+    array_of_rgb=[]
+    i=0
+    while i<count:
+        rgb=[]
+        for num in range(0,3):
+            rgb.append(randrange(0,255))
+        array_of_rgb.append(rgb)
+        i+=1
+    return array_of_rgb
+print(rgb_color_gen(5))
+"""
+
 #Write a function generate_colors which can generate any number of hexa or rgb colors.
 """
-   generate_colors('hexa', 3) # ['#a3e12f','#03ed55','#eb3d2b'] 
-   generate_colors('hexa', 1) # ['#b334ef']
-   generate_colors('rgb', 3)  # ['rgb(5, 55, 175','rgb(50, 105, 100','rgb(15, 26, 80'] 
-   generate_colors('rgb', 1)  # ['rgb(33,79, 176)']s
+def generate_colors(tipo,count):
+    tipo_color=tipo.lower()
+    if tipo_color=="rgb":
+        array_of_rgb=[]
+        i=0
+        while i<count:
+            rgb=[]
+            for num in range(0,3):
+                rgb.append(randrange(0,255))
+            array_of_rgb.append(rgb)
+            i+=1
+        return array_of_rgb
+    if tipo=="hexa":
+        hex_array=[]
+        i=0
+        while i<count:
+            color = randrange(0, 2**24)
+            hex_color= hex(color)
+            std_hex="#"+hex_color[2:]
+            hex_array.append(std_hex)
+            i+=1
+        return hex_array
+print(generate_colors('hexa', 3))
+print(generate_colors('hexa', 1))
+print(generate_colors('rgb', 3))
+print(generate_colors('rgb', 1))
 """
 
 #Exercises: Level 3
 
 #Call your function shuffle_list, it takes a list as a parameter and it returns a shuffled list
+"""
+def shuffle_list(list=[]):
+    shuffle(list)
+    return list
+print(shuffle_list([1,4,6,8,5,5,7,4,3,4,6]))
+"""
+
 #Write a function which returns an array of seven random numbers in a range of 0-9. All the numbers must be unique.
+"""
+def seven_number_gen():
+    numbers = list(range(10))
+    shuffle(numbers)
+    return numbers[:7]
+print(seven_number_gen())
+"""
