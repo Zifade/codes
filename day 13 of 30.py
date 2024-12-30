@@ -72,3 +72,7 @@ flat_list=[f"{first_name} {last_name}" for [(first_name, last_name)] in names]
 print(flat_list)
 """
 #Write a lambda function which can solve a slope or y-intercept of linear functions.
+"""
+slope=lambda x1,y1,x2,y2: (y2 - y1) / (x2 - x1)
+print(slope(3,5,7,4))
+"""
