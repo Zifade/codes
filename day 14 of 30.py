@@ -34,17 +34,31 @@ print(list(greeting))
 """
 
 #Use for loop to print each country in the countries list.
-paises
-def enumeracion_paises(p):
-    return 'Pais {}'.format(p)
-numero_pais= map(enumeracion_paises, paises)
-for pais in numero_pais:
-    print(pais)
-#Use for to print each name in the names list.
+countries = ['Estonia', 'Finland', 'Sweden', 'Denmark', 'Norway', 'Iceland']
+names = ['Asabeneh', 'Lidiya', 'Ermias', 'Abraham']
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+"""
+x=0
+for i in countries:
+    print(countries[x])
+    x+=1
+"""
 
+#Use for to print each name in the names list.
+"""
+x=0
+for i in names:
+    print(names[x])
+    x+=1
+"""
 
 #Use for to print each number in the numberslis
-
+"""
+x=0
+for i in numbers:
+    print(numbers[x])
+    x+=1
+"""
 
 #---Exercises LVL2
 
