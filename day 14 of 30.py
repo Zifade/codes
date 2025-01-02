@@ -1,5 +1,11 @@
 from functools import reduce
-from countries_data import paises
+from countries import countriess
+
+#--Resources
+countries = ['Estonia', 'Finland', 'Sweden', 'Denmark', 'Norway', 'Iceland']
+names = ['Asabeneh', 'Lidiya', 'Ermias', 'Abraham']
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
 #---Exercises LVL1
 
 #Explain the difference between map, filter, and reduce.
@@ -34,9 +40,6 @@ print(list(greeting))
 """
 
 #Use for loop to print each country in the countries list.
-countries = ['Estonia', 'Finland', 'Sweden', 'Denmark', 'Norway', 'Iceland']
-names = ['Asabeneh', 'Lidiya', 'Ermias', 'Abraham']
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 """
 x=0
 for i in countries:
@@ -64,35 +67,150 @@ for i in numbers:
 
 
 #Use map to create a new list by changing each country to uppercase in the countries list
+"""
+def string_upper(c):
+    return c.upper()
+
+upper_country=map(string_upper,countries)
+print(list(upper_country))
+"""
 
 #Use map to create a new list by changing each number to its square in the numbers list
+"""
+def cuadratura(n):
+    return n**2
+numero_cuadrado=map(cuadratura,numbers)
+print(list(numero_cuadrado))
+"""
 
 #Use map to change each name to uppercase in the names list
+"""
+def string_upper(n):
+    return n.upper()
+
+upper_name=map(string_upper,names)
+print(list(upper_name))
+"""
 
 #Use filter to filter out countries containing 'land'.
+"""
+def coincidence_checker(c):    
+    if 'land' in c:
+        return False
+    return True
+land_filter=filter(coincidence_checker,countries)
+print(list(land_filter))
+"""
 
 #Use filter to filter out countries having exactly six characters.
+"""
+def country_counter(c):
+    if len(c)==6:
+        return False
+    return True
+count_filter=filter(country_counter, countries)
+print(list(count_filter))
+"""
 
 #Use filter to filter out countries containing six letters and more in the country list.
+"""
+def country_counter(c):
+    if len(c)>6:
+        return False
+    return True
+count_filter=filter(country_counter, countries)
+print(list(count_filter))
+"""
 
 #Use filter to filter out countries starting with an 'E'
+"""
+def e_checker(c):
+    if 'E'==c[0]:
+        return False
+    return True
+e_filter=filter(e_checker,countries)
+print(list(e_filter))
+"""
 
 #Chain two or more list iterators (eg. arr.map(callback).filter(callback).reduce(callback))
+"""
+cadena= reduce(lambda x,y:x+y,filter(lambda x : x % 2==0, numbers))
+print(cadena)
+"""
 
 #Declare a function called get_string_lists which takes a list as a parameter and then returns a list containing only string items.
+"""
+def get_string_lists(s):
+    return str(s)
+string_list=map(get_string_lists,numbers)
+print(list(string_list))
+"""
 
 #Use reduce to sum all the numbers in the numbers list.
+"""
+suma_reducida=reduce(lambda x,y:x+y, numbers)
+print(suma_reducida)
+"""
 
 #Use reduce to concatenate all the countries and to produce this sentence: Estonia, Finland, Sweden, Denmark, Norway, and Iceland are north European countries
+"""
+def sentence(x,y):
+    return x+' '+y
+concatenacion=reduce(sentence, countries)
+print(concatenacion)
+"""
 
 #Declare a function called categorize_countries that returns a list of countries with some common pattern (you can find the countries list in this repository as countries.js(eg 'land', 'ia', 'island', 'stan')).
+"""
+def categorize_counties(c):
+    if 'land'in c:
+        return True
+    return False
+categoria=filter(categorize_counties,countriess)
+print(list(categoria))
+"""
 
 #Create a function returning a dictionary, where keys stand for starting letters of countries and values are the number of country names starting with that letter.
+"""
+def dicc_count(countries):
+    letter_count={}
+    for country in countries:
+        first_letter=country[0].upper()
+        if first_letter in letter_count:
+            letter_count[first_letter]+=1
+        else:
+            letter_count[first_letter] = 1
+    return letter_count
+result=dicc_count(countries)
+print(result)
+"""
 
 #Declare a get_first_ten_countries function - it returns a list of first ten countries from the countries.js list in the data folder.
+"""
+def country_getter(countriess):
+    first_ten=[]
+    i=0
+    while i<10:
+        first_ten.append(countriess[i])
+        i+=1
+    return first_ten
+diez=country_getter(countriess)
+print(diez)
+"""
 
 #Declare a get_last_ten_countries function that returns the last ten countries in the countries list.
-
+"""
+def country_getter(countriess):
+    last_ten=[]
+    i=0
+    countriess.reverse()
+    while i<10:
+        last_ten.append(countriess[i])
+        i+=1
+    return last_ten
+diez=country_getter(countriess)
+print(diez)
+"""
 
 #--Excercises LVL3
 
