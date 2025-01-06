@@ -1,6 +1,7 @@
 from functools import reduce
 from countries import countriess
-
+from countries_data import paises
+from collections import Counter
 #--Resources
 countries = ['Estonia', 'Finland', 'Sweden', 'Denmark', 'Norway', 'Iceland']
 names = ['Asabeneh', 'Lidiya', 'Ermias', 'Abraham']
@@ -217,8 +218,57 @@ print(diez)
 #Use the countries_data.py (https://github.com/Asabeneh/30-Days-Of-Python/blob/master/data/countries-data.py) file and follow the tasks below:
 
 #Sort countries by name, by capital, by population
+"""
+def name_getter(country):
+    return country["name"]
+
+nombres_paises=map(name_getter,paises)
+nombres_ordenados=sorted(list(nombres_paises))
+print(list(nombres_ordenados))
+"""
+
+"""
+def capital_getter(country):
+    return country["capital"]
+
+capital_paises = map(capital_getter, paises)
+capitales_ordenadas = sorted(list(capital_paises))
+print(capitales_ordenadas)
+"""
+"""
+def poblacion_getter(country):
+    return country['population']
+
+poblacion_paises=map(poblacion_getter,paises)
+poblacion_ordenado= sorted(list(poblacion_paises), reverse= True)
+print(poblacion_ordenado)
+"""
 
 #Sort out the ten most spoken languages by location.
+"""
+n=10
+contador_idiomas = Counter()
+for pais in paises:
+    idiomas = pais.get('languages', [])
+    contador_idiomas.update(idiomas)
+idiomas_mas_comunes = contador_idiomas.most_common(n)
+top_10_idiomas=idiomas_mas_comunes
+for idioma, frecuencia in top_10_idiomas:
+    print(f"{idioma}: hablado en {frecuencia} países")
+"""
 
+    
 #Sort out the ten most populated countries.
+"""
+def encontrar_paises_mas_poblados(paises, n=10):
+    paises_ordenados = sorted(paises, key=lambda x: x.get('population', 0), reverse=True)
+    top_n_paises = paises_ordenados[:n]
+    return top_n_paises
+top_10_paises = encontrar_paises_mas_poblados(paises, 10)
+print("Los 10 países con mayor población son:")
+for i, pais in enumerate(top_10_paises, 1):
+    nombre = pais.get('name', 'Desconocido')
+    poblacion = pais.get('population', 'Desconocida')
+    print(f"{i}. {nombre}: {poblacion:,} habitantes")
+"""
 
