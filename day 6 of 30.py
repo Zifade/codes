@@ -32,6 +32,7 @@ print('familia ', familia)
 
 
 #    Create fruits, vegetables and animal products tuples. Join the three tuples and assign it to a variable called food_stuff_tp.
+"""
 frutas=('frutilla','manzana')
 vegetales=('lechuga','papa')
 animal=('cerdo','pavo')
@@ -40,10 +41,15 @@ print(vegetales)
 print(animal)
 food_stuff_tp=frutas+vegetales+animal
 print(food_stuff_tp)
+"""
+
 
 #    Change the about food_stuff_tp tuple to a food_stuff_lt list
+"""
 food_stuff_lst=list(food_stuff_tp)
 print(food_stuff_lst)
+
+"""
 
 #    Slice out the middle item or items from the food_stuff_tp tuple or food_stuff_lt list.
 """
