@@ -54,3 +54,17 @@ is_valid_variable('firstname') # True
 #Clean the following text. After cleaning, count three most frequent words in the string.
 
 sentence = '''%I $am@% a %tea@cher%, &and& I lo%#ve %tea@ching%;. There $is nothing; &as& mo@re rewarding as educa@ting &and& @emp%o@wering peo@ple. ;I found tea@ching m%o@re interesting tha@n any other %jo@bs. %Do@es thi%s mo@tivate yo@u to be a tea@cher!?'''
+"""
+clean_sentence = re.sub('[$%@&;#]', '', sentence)
+
+def count_words_regex(sent):
+    sent = sent.lower()
+    words = re.findall(r'\b\w+\b', sent)
+    word_counts = Counter(words)
+    most_common=word_counts.most_common(3)
+    return most_common
+
+tres_palabras_comunes= count_words_regex(clean_sentence)
+for i, (palabra, frecuencia) in enumerate(tres_palabras_comunes, 1):
+    print(f"{i}ra Palabra más común: '{palabra}' (aparece {frecuencia} veces)")
+"""
