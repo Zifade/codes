@@ -3,6 +3,7 @@ from collections import Counter
 import json
 from stop_words import stop_words
 from typing import Set
+import csv
 #---Exercises LVL1
 
 
@@ -217,6 +218,39 @@ print(find_most_common_words(words_string,10))
 """
 
 #Read the hacker news csv file and find out:
+"""
 #   a) Count the number of lines containing python or Python
+
+with open('data\hacker_news.csv') as hack_news:
+    csv_reader = csv.reader(hack_news, delimiter=',')
+    line_count = 0
+    lines_with_python = 0
+    for row in csv_reader:
+        if 'python' in row[1].lower():
+            lines_with_python += 1
+    print(f'Number of lines with Python: {lines_with_python}')
+
+
 #   b) Count the number lines containing JavaScript, javascript or Javascript
+
+with open('data\hacker_news.csv') as hack_news:
+    csv_reader = csv.reader(hack_news, delimiter=',')
+    next(csv_reader)
+    lines_with_js = 0
+    for row in csv_reader:
+        if 'javascript' in row[1].lower():
+            lines_with_js +=1
+    print(f'Number of lines with JavaScript:  {lines_with_js}')
+
 #   c) Count the number lines containing Java and not JavaScript
+with open('data\hacker_news.csv') as hack_news:
+    csv_reader = csv.reader(hack_news, delimiter=',')
+    next(csv_reader)
+    lines_with_jv = 0
+    for row in csv_reader:
+        if 'java' in row[1].lower():
+            lines_with_jv +=1
+        if 'javascript' in row[1].lower():
+            lines_with_jv +=-1
+    print(f'Number of lines with only Java:  {lines_with_jv}')
+"""
