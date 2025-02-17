@@ -204,7 +204,6 @@ if __name__ == "__main__":
 #Find the 10 most repeated words in the romeo_and_juliet.txt
 """
 def find_most_common_words(text_in,amount):
-    qty=int(amount)
     text_in = text_in.lower()
     words = re.findall(r'\b\w+\b', text_in)
     word_counts = Counter(words)
