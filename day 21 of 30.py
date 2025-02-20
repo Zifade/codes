@@ -42,7 +42,7 @@ Frequency Distribution: [(20.0, 26), (16.0, 27), (12.0, 32), (8.0, 37), (8.0, 34
 """
 
 #----------
-"""
+
 class estadisticas:
     def __init__(self, ages = [31, 26, 34, 37, 27, 26, 32, 32, 26, 27, 27, 24, 32, 33, 27, 25, 26, 38, 37, 31, 34, 24, 33, 29, 26]):
         self.data= ages
@@ -91,12 +91,60 @@ print(edades.central_tendency())
 print(edades.measure_of_variability())
 print(edades.mmcp())
 print(edades.frequency_distribution())
-"""
+
 
 #---Exercises LVL 2
 
 #Create a class called PersonAccount.
-# It has firstname, lastname, incomes, expenses properties and it has total_income, total_expense, account_info, add_income, add_expense
-# and account_balance methods.
+# It has firstname, lastname, incomes, expenses properties
+# and it has total_income, total_expense, account_info, add_income, add_expense and account_balance methods.
 # Incomes is a set of incomes and its description. The same goes for expenses.
 
+class personaccount:
+    def __init__(self,firstname='jorge',lastname='lutz',income=100,expenses=50):
+        self.firstname = firstname
+        self.lastname = lastname
+        self.incomes = []  
+        self.expenses = []   
+
+
+    def add_income(self, cantidad, descripcion):
+        self.incomes.append({"cantidad": cantidad, "descripcion": descripcion})
+        return f"Income añadido: {cantidad} - {descripcion}"
+
+    def add_expense(self, cantidad, descripcion):
+        self.expenses.append({"cantidad": cantidad, "descripcion": descripcion})
+        return f"Gasto añadido: {cantidad} - {descripcion}"
+
+    def total_income(self):
+        return sum(income["cantidad"] for income in self.incomes)
+
+    def total_expense(self):
+        return sum(expense["cantidad"] for expense in self.expenses)
+
+    def account_balance(self):
+        return self.total_income() - self.total_expense()
+
+    def account_info(self):
+        info = f"Cuenta de {self.firstname} {self.lastname}\n"
+        info += "\nIngresos:\n"
+        for income in self.incomes:
+            info += f"- {income['descripcion']}: ${income['cantidad']}\n"
+        
+        info += "\nGastos:\n"
+        for expense in self.expenses:
+            info += f"- {expense['descripcion']}: ${expense['cantidad']}\n"
+        
+        info += f"\nBalance total: ${self.account_balance()}"
+        return info
+
+persona = personaccount("Jorge", "Lutz")
+
+
+persona.add_income(1000, "Salario")
+persona.add_income(200, "Freelance")
+
+persona.add_expense(500, "Alquiler")
+persona.add_expense(100, "Comida")
+
+print(persona.account_info())
