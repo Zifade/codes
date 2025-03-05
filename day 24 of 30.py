@@ -92,6 +92,188 @@ numpy_int_arr = np.array([1,2,3,4], dtype = 'float')
 print(numpy_int_arr.astype('int').astype('str'))
 """
 
+#-- multidiemsional numpy array
+"""
+print(type(numpy_two_dimensional_list))
+print(numpy_two_dimensional_list)
+print('Shape: ', numpy_two_dimensional_list.shape)
+print('Size: ', numpy_two_dimensional_list.size)
+print('Data type: ', numpy_two_dimensional_list.dtype)
+"""
 
+#-- getting items from numpy array
+first_row=numpy_two_dimensional_list[0]
+second_row=numpy_two_dimensional_list[1]
+third_row=numpy_two_dimensional_list[2]
+
+first_column= numpy_two_dimensional_list[:,0]
+second_column = numpy_two_dimensional_list[:,1]
+third_column = numpy_two_dimensional_list[:,2]
+"""
+print('First row:', first_row)
+print('Second row:', second_row)
+print('Third row: ', third_row)
+
+print('First column:', first_column)
+print('Second column:', second_column)
+print('Third column: ', third_column)
+
+print('Full array: ',numpy_two_dimensional_list)
+"""
+#-- slice numpy array
+first_two_rows_and_columns = numpy_two_dimensional_list[0:2, 0:2]
+"""
+print(first_two_rows_and_columns)
+"""
+##-- reverse array
+"""
+print('invertido x1: \n',numpy_two_dimensional_list[::-1])
+print('invertido x2: \n',numpy_two_dimensional_list[::-1,::-1])
+"""
+
+#-- represent missing values
+
+"""print(numpy_two_dimensional_list)
+numpy_two_dimensional_list[1,1] = 55
+numpy_two_dimensional_list[1,2] =44
+print(numpy_two_dimensional_list)"""
+
+##-- numpy zeroes
+numpy_zeroes = np.zeros((3,3),dtype=int,order='C')
+numpy_ones = np.ones((3,3),dtype=int,order='C')
+doses=numpy_ones*2
+"""
+print(numpy_zeroes)
+print(numpy_ones)
+print(doses)
+"""
+##-- reshape
+first_shape  = np.array([(1,2,3), (4,5,6)])
+reshaped = first_shape.reshape(3,2)
+flattened= reshaped.flatten()
+"""
+print(first_shape)
+print(reshaped)
+print(flattened)
+"""
+
+## --Horizontal Stack
+np_list_one = np.array([1,2,3])
+np_list_two = np.array([4,5,6])
+"""
+print(np_list_one + np_list_two)
+print('Horizontal Append:', np.hstack((np_list_one, np_list_two)))
+"""
+## -- vertical stack
+"print('Vertical Append: \n', np.vstack((np_list_one, np_list_two)))"
+
+#-- Generar numeros random
+random_float = np.random.random()
+random_floats = np.random.random(5)
+random_int = np.random.randint(0, 11)
+random_ints = np.random.randint(2,10, size=4)
+random_int_arr = np.random.randint(2,10, size=(3,3))
+"""
+print(random_float)
+print(random_floats)
+print(random_int)
+print(random_ints)
+print(random_int_arr)
+"""
+## np.random.normal(mu, sigma, size)
+normal_array = np.random.normal(79, 15, 80)
+"print(normal_array)"
+
+#-- Numpy and statistics
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+#counts, bins, _ = plt.hist(normal_array, color="grey", bins=50)
+"""
+print("Resultado del histograma:")
+print(counts)
+print(bins)
+"""
+#-- Matrix en numpy
+
+four_by_four_matrix = np.matrix(np.ones((4,4), dtype=float))
+"print(four_by_four_matrix)"
+np.asarray(four_by_four_matrix)[2] = 2
+"print(four_by_four_matrix)"
+
+#-- Numpy arrange
+##-- python range | range(starting, stop, step)
+lst = range(0, 11, 2)
+"print(lst)"
+
+for l in lst:
+    "print(l)"
+
+##-- numpy range | numpy.arange(start, stop, step)
+whole_numbers = np.arange(0, 20, 1)
+natural_numbers = np.arange(1, 20, 1)
+odd_numbers = np.arange(1, 20, 2)
+even_numbers = np.arange(2, 20, 2)
+"""
+print('numeros enteros: \n',whole_numbers)
+print('numeros naturales: \n',natural_numbers)
+print('numeros impares: \n',odd_numbers)
+print('numeros pares: \n',even_numbers)
+"""
+
+#-- secuencia de numeros con linspace
+
+arr= np.linspace(1.0, 5.0, num=10)
+"print(arr)"
+
+arr=np.linspace(1.0, 5.0, num=5, endpoint=False)
+"print(arr)"
+
+## LogSpace returns even spaced numbers on a log scale. Logspace has the same parameters as np.linspace.
+## numpy.logspace(start, stop, num, endpoint)
+
+log=np.logspace(2, 4.0, num=4)
+"print(log)"
+
+## to check the size of an array
+x = np.array([1,2,3], dtype=np.complex128)
+"""
+print(x)
+print(x.itemsize)
+"""
+
+# indexing and Slicing NumPy Arrays in Python
+np_list = np.array([(1,2,3), (4,5,6)])
+"""
+print(np_list)
+print('First row: ', np_list[0])
+print('Second row: ', np_list[1])
+
+print('First column: ', np_list[:,0])
+print('Second column: ', np_list[:,1])
+print('Third column: ', np_list[:,2])
+"""
+
+
+#------Numpy Functions
+"""
+    Min np.min()
+    Max np.max()
+    Mean np.mean()
+    Median np.median()
+    Varience
+    Percentile
+    Standard deviation np.std()
+"""
+np_normal_dis = np.random.normal(5, 0.5, 100)
+np_normal_dis
+## min, max, mean, median, sd
+"""
+print('min: ', numpy_two_dimensional_list.min())
+print('max: ', numpy_two_dimensional_list.max())
+print('mean: ',numpy_two_dimensional_list.mean())
+print('median: ', np.median(numpy_two_dimensional_list))
+print('sd: ', numpy_two_dimensional_list.std())
+"""
 
 
