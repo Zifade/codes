@@ -173,16 +173,23 @@ random_floats = np.random.random(5)
 random_int = np.random.randint(0, 11)
 random_ints = np.random.randint(2,10, size=4)
 random_int_arr = np.random.randint(2,10, size=(3,3))
+rand_int = np.random.randint(0, 10, size=[5,3])
 """
 print(random_float)
 print(random_floats)
 print(random_int)
 print(random_ints)
 print(random_int_arr)
+print(rand_int)
 """
+
 ## np.random.normal(mu, sigma, size)
 normal_array = np.random.normal(79, 15, 80)
 "print(normal_array)"
+
+#-- random strings
+
+"print(np.random.choice(['a', 'e', 'i', 'o', 'u'], size=10))"
 
 #-- Numpy and statistics
 import matplotlib.pyplot as plt
@@ -265,8 +272,7 @@ print('Third column: ', np_list[:,2])
     Percentile
     Standard deviation np.std()
 """
-np_normal_dis = np.random.normal(5, 0.5, 100)
-np_normal_dis
+
 ## min, max, mean, median, sd
 """
 print('min: ', numpy_two_dimensional_list.min())
@@ -275,5 +281,104 @@ print('mean: ',numpy_two_dimensional_list.mean())
 print('median: ', np.median(numpy_two_dimensional_list))
 print('sd: ', numpy_two_dimensional_list.std())
 """
+"""
+print(numpy_two_dimensional_list)
+print('Column with minimum: ', np.amin(numpy_two_dimensional_list,axis=0))
+print('Column with maximum: ', np.amax(numpy_two_dimensional_list,axis=0))
+print('=== Row ==')
+print('Row with minimum: ', np.amin(numpy_two_dimensional_list,axis=1))
+print('Row with maximum: ', np.amax(numpy_two_dimensional_list,axis=1))
+"""
+
+## idk
+
+np_normal_dis = np.random.normal(5, 0.5, 1000)
+"""
+## min, max, mean, median, sd
+print('min: ', np.min(np_normal_dis))
+print('max: ', np.max(np_normal_dis))
+print('mean: ', np.mean(np_normal_dis))
+print('median: ', np.median(np_normal_dis))
+#print('mode: ', stats.mode(np_normal_dis)) | from scipy import stats(instalar)
+print('sd: ', np.std(np_normal_dis))
+"""
+
+#-- graphs
+#plt.hist(np_normal_dis, color="grey", bins=21)
+"plt.show()"
+
+"""
+numpy.dot(): Dot Product in Python using Numpy
+Dot Product
+Numpy is powerful library for matrices computation. For instance, you can compute the dot product with np.dot
+
+Syntax
+
+numpy.dot(x, y, out=None)
+"""
+
+## Linear algebra
+### Dot product: product of two arrays
+f = np.array([1,2,3])
+g = np.array([4,5,3])
+
+### 1*4+2*5 + 3*6
+result= np.dot(f, g)
+"print(result)"
+
+### Matmul: matruc product of two arrays
+h = [[1,2],[3,4]]
+i = [[5,6],[7,8]]
+### 1*5+2*7 = 19
+result=np.matmul(h, i)
+"print(result)"
+
+## Determinant 2*2 matrix
+### 5*8-7*6np.linalg.det(i)
+result= np.linalg.det(i)
+"print(result)"
+
+#-- random numpy array mod
+
+Z = np.zeros((8,8))
+Z[1::2,::2] = 1
+Z[::2,1::2] = 1
+"print(Z)"
+
+#--
+new_list = [ x + 2 for x in range(0, 11)]
+"print(new_list)"
+
+np_arr = np.array(range(0, 11))
+np_arr + 2
+"print(np_arr)"
+
+#-- We use linear equation for quantities which have linear relationship. Let's see the example below:
+
+temp = np.array([1,2,3,4,5])
+pressure = temp * 2 + 5
+"print(pressure)"
+"""
+plt.plot(temp,pressure)
+plt.xlabel('Temperature in oC')
+plt.ylabel('Pressure in atm')
+plt.title('Temperature vs Pressure')
+plt.xticks(np.arange(0, 6, step=0.5))
+plt.show()
+"""
+
+#-- graph gausiana con numpy
+"""
+mu = 28
+sigma = 15
+samples = 100000
+
+x = np.random.normal(mu, sigma, samples)
+ax = sns.distplot(x);
+ax.set(xlabel="x", ylabel='y')
+plt.show()
+"""
+
+
 
 
