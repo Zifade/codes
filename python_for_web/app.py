@@ -1,19 +1,37 @@
-#python app.py(prender) | deactivate(apagar)
+#activar venv(venv\Scripts\activate) | python app.py(prender) | deactivate(apagar)
 # let's import the flask
 
-from flask import Flask
-import os # importing operating system module
+from flask import Flask, render_template, request, redirect, url_for
+import os
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-@app.route('/') # this decorator create the home route
-def home ():
-    return '<h1>Welcome</h1>'
+#-- rutas | links
+@app.route('/')
+def home(): 
+    techs = ['HTML', 'CSS', 'Flask', 'Python']
+    name = '30 Days Of Python Programming'
+    return render_template('home.html', techs=techs, name = name, title = 'Home')
 
 @app.route('/about')
 def about():
-    return '<h1>About us</h1>'
+    name = '30 Days Of Python Programming'
+    return render_template('about.html', name = name, title = 'About Us')
 
+@app.route('/result')
+def result():
+    return render_template('result.html')
+
+@app.route('/post', methods= ['GET','POST'])
+def post():
+    name = 'Text Analyzer'
+    if request.method == 'GET':
+        return render_template('post.html', name = name, title = name)
+    if request.method =='POST':
+        content = request.form['content']
+        print(content)
+        return redirect(url_for('result'))
 
 if __name__ == '__main__':
     # for deployment we use the environ
