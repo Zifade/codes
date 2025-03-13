@@ -1,4 +1,6 @@
+#python app.py(prender) | deactivate(apagar)
 # let's import the flask
+
 from flask import Flask
 import os # importing operating system module
 
