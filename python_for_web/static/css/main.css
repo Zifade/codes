@@ -41,10 +41,10 @@ header {
   text-decoration: none;
 }
 
-/* Estilos específicos para la navegación */
+/* Estilos navegación */
 .menu-container {
   display: flex;
-  justify-content: center; /* Alinea los elementos a la derecha */
+  justify-content: center;
 }
 
 .nav-lists {
@@ -55,11 +55,11 @@ header {
 }
 
 .nav-list {
-  margin-left: 1.5rem; /* Espacio entre elementos */
+  margin-left: 1.5rem;
 }
 
 .nav-link {
-  color: #ffffff; /* Texto en blanco */
+  color: #ffffff;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
@@ -69,11 +69,11 @@ header {
 }
 
 .nav-link:hover {
-  color: #8B4513; /* Café oscuro para hover */
+  color: #8B4513;
 }
 
 .nav-link.active {
-  border-bottom: 2px solid #8B4513; /* Indicador para la página activa */
+  border-bottom: 2px solid #8B4513;
 }
 
 nav ul {
@@ -92,7 +92,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  color: #8B4513; /* Café oscuro para hover */
+  color: #8B4513;
 }
 
 /* Secciones principales */
@@ -111,7 +111,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 2.5rem;
-  border-bottom: 2px solid #8B4513; /* Acento café oscuro */
+  border-bottom: 2px solid #8B4513;
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
 }
@@ -167,7 +167,7 @@ input, textarea {
 
 input:focus, textarea:focus {
   outline: none;
-  border-color: #8B4513; /* Acento café oscuro */
+  border-color: #8B4513;
   box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.1);
 }
 
@@ -192,7 +192,7 @@ textarea {
 }
 
 .btn:hover {
-  background-color: #8B4513; /* Café oscuro para hover */
+  background-color: #8B4513;
 }
 
 .btn-secondary {
@@ -224,27 +224,27 @@ textarea {
 }
 
 .original-text {
-  white-space: pre-wrap;       /* Mantiene los saltos de línea pero permite el ajuste */
-  word-wrap: break-word;       /* Rompe palabras largas si es necesario */
-  overflow-wrap: break-word;   /* Asegura que las palabras largas se rompan */
+  white-space: pre-wrap;       /* Mantiene los saltos, permite ajuste */
+  word-wrap: break-word;       /* Rompe palabras largas */
+  overflow-wrap: break-word;   /* Asegura que las palabras se rompan */
   background-color: #f9f9f9;
   padding: 1rem;
   border-radius: 4px;
   border: 1px solid #ddd;
   font-family: monospace;
   max-height: 300px;
-  overflow-y: auto;            /* Desplazamiento vertical si es necesario */
-  overflow-x: hidden;          /* Oculta el desplazamiento horizontal */
-  max-width: 100%;             /* Asegura que no exceda el ancho del contenedor */
-  box-sizing: border-box;      /* Incluye padding y border en el ancho total */
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* Asegurarse de que el contenedor también tenga las propiedades correctas */
+
 .result-container {
   width: 100%;
-  overflow: hidden;            /* Oculta cualquier desbordamiento */
-  word-wrap: break-word;       /* Permite romper palabras largas */
-  box-sizing: border-box;      /* Incluye padding y border en el ancho total */
+  overflow: hidden;
+  word-wrap: break-word;
+  box-sizing: border-box;
 }
 
 /* Footer */
@@ -269,7 +269,7 @@ footer {
 }
 
 .footer-links a:hover {
-  color: #8B4513; /* Café oscuro para hover */
+  color: #8B4513;
 }
 
 /* Responsive */
@@ -289,11 +289,11 @@ footer {
 
   /* Responsive para la navegación */
   .menu-container {
-    justify-content: center; /* Centra los elementos en pantallas pequeñas */
+    justify-content: center;
   }
   
   .nav-list {
-    margin: 0 0.75rem; /* Ajusta el espacio en pantallas pequeñas */
+    margin: 0 0.75rem;
   }
   
   .footer-content {

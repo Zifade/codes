@@ -1,4 +1,3 @@
-#activar venv(venv\Scripts\activate) | python app.py(prender) | deactivate(apagar)
 # let's import the flask
 
 from flask import Flask, render_template, request, redirect, url_for
