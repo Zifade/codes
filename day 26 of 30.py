@@ -4,7 +4,7 @@
 #Crear venv
 #   python -m venv venv(dentro de la carpeta objetivo)
 #activar venv
-#   venv(venv\Scripts\activate
+#   venv(venv\Scripts\activate)
 
 #iniciacion de flask
 #   python app.py(prender) | deactivate(apagar)
