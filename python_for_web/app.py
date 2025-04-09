@@ -3,15 +3,22 @@
 from flask import Flask, render_template, request, redirect, url_for
 import re
 from collections import Counter
-import os
+import os # importing operating system module
+import pymongo
+from bson.objectid import ObjectId
+MONGODB_URI = 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/?retryWrites=true&w=majority&appName=30DaysOfPython'
+client = pymongo.MongoClient(MONGODB_URI)
+db = client.thirty_days_of_python
+
 
 app = Flask(__name__)
 
 @app.route('/')
 def home(): 
-    techs = ['HTML', 'CSS', 'Flask', 'Python']
+    back_techs = ['Python','Flask','MongoDB']
+    front_techs= ['HTML', 'CSS', 'JavaScript']
     name = '30 Days Of Python Programming'
-    return render_template('home.html', techs=techs, name=name, title='Home')
+    return render_template('home.html', back_techs=back_techs, front_techs=front_techs, name=name, title='Home')
 
 @app.route('/about')
 def about():

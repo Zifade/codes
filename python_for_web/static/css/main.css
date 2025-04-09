@@ -76,25 +76,6 @@ header {
   border-bottom: 2px solid #8B4513;
 }
 
-nav ul {
-  display: flex;
-  list-style: none;
-}
-
-nav ul li {
-  margin-left: 1.5rem;
-}
-
-nav ul li a {
-  color: #ccc;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-nav ul li a:hover {
-  color: #8B4513;
-}
-
 /* Secciones principales */
 .main-section {
   background-color: #fff;
@@ -125,14 +106,49 @@ p {
   color: #444;
 }
 
-/* Lista de tecnologías */
-.tech-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1.5rem 0;
+/* Estilos para listas principales y tecnologías */
+/* Lista principal numerada */
+.main-list {
+  margin-left: 2em;
+  padding-left: 0;
+  list-style-position: outside;
 }
 
+/* Elementos de categoría (Front End, Back End) */
+.category-item {
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+  display: list-item;
+}
+
+/* Listas de tecnologías - CORREGIDO para mostrar verticalmente */
+.tech-list, 
+.ftech-lists, 
+.btech-lists {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  display: block !important; /* Fuerza visualización vertical */
+  flex-wrap: unset !important;
+  gap: 0;
+  list-style-type: disc;
+  margin-left: 2em;
+}
+
+/* Elementos de tecnología */
+.tech-list li,
+.ftech-lists li,
+.btech-lists li,
+.tech {
+  font-weight: normal;
+  font-size: 0.85em;
+  margin-bottom: 0.5em;
+  display: list-item !important; /* Fuerza visualización vertical */
+  width: 100%;
+}
+
+/* Estilo para elementos destacados en listas */
 .tech-item {
   background-color: #333;
   color: #fff;
@@ -140,6 +156,17 @@ p {
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 500;
+  display: inline-block;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos para listas personalizadas */
+.custom-list li {
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-bottom: 0.5em;
+  display: list-item;
 }
 
 /* Formularios */
@@ -210,6 +237,10 @@ textarea {
   border-radius: 4px;
   padding: 1.5rem;
   margin-top: 1.5rem;
+  width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+  box-sizing: border-box;
 }
 
 .result-item {
@@ -236,14 +267,6 @@ textarea {
   overflow-y: auto;
   overflow-x: hidden;
   max-width: 100%;
-  box-sizing: border-box;
-}
-
-
-.result-container {
-  width: 100%;
-  overflow: hidden;
-  word-wrap: break-word;
   box-sizing: border-box;
 }
 
@@ -279,21 +302,17 @@ footer {
     text-align: center;
   }
   
-  nav ul {
+  .nav-lists {
     margin-top: 1rem;
   }
   
-  nav ul li {
+  .nav-list {
     margin: 0 0.75rem;
   }
 
   /* Responsive para la navegación */
   .menu-container {
     justify-content: center;
-  }
-  
-  .nav-list {
-    margin: 0 0.75rem;
   }
   
   .footer-content {

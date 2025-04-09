@@ -6,12 +6,23 @@
     most frequent words in the text. Check it out by click text analyzer at the
     menu. You need the following technologies to build this web application:
   </p>
-  <ul class="tech-lists">
-    {% for tech in techs %}
-    <li class="tech">{{tech}}</li>
-
-    {% endfor %}
-  </ul>
+  
+  <ol class="main-list">
+    <li class="category-item">Front End
+      <ul class="tech-list">
+        {% for tech in front_techs %}
+        <li class="tech">{{tech}}</li>
+        {% endfor %}
+      </ul>
+    </li>
+    
+    <li class="category-item">Back End
+      <ul class="tech-list">
+        {% for tech in back_techs %}
+        <li class="tech">{{tech}}</li>
+        {% endfor %}
+      </ul>
+    </li>
+  </ol>
 </div>
-
 {% endblock %}
