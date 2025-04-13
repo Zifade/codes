@@ -1,17 +1,21 @@
 # let's import the flask
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, Response, redirect, url_for
 import re
 from collections import Counter
 import os # importing operating system module
 import pymongo
+import json
 from bson.objectid import ObjectId
 MONGODB_URI = 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/?retryWrites=true&w=majority&appName=30DaysOfPython'
 client = pymongo.MongoClient(MONGODB_URI)
+# Creating database
 db = client.thirty_days_of_python
 
 
 app = Flask(__name__)
+
+#-- home page
 
 @app.route('/')
 def home(): 
@@ -20,10 +24,14 @@ def home():
     name = '30 Days Of Python Programming'
     return render_template('home.html', back_techs=back_techs, front_techs=front_techs, name=name, title='Home')
 
+#-- about page
+
 @app.route('/about')
 def about():
     name = '30 Days Of Python Programming'
     return render_template('about.html', name=name, title='About Us')
+
+#-- page de resultados del analisis de texto
 
 @app.route('/result')
 def result():
@@ -33,6 +41,8 @@ def result():
     # Obtener resultados
     results = app.analysis_results
     return render_template('result.html', results=results, title='Analysis Results')
+
+#-- text analizer page
 
 @app.route('/post', methods=['GET','POST'])
 def post():
@@ -47,6 +57,8 @@ def post():
         app.analysis_results = results
         
         return redirect(url_for('result'))
+
+#-- text analyzer backend logic
 
 def analyze_text(text):
     """
@@ -82,6 +94,13 @@ def analyze_text(text):
     }
     
     return results
+
+#-- api estudiantes
+
+@app.route('/api/v1.0/students', methods = ['GET'])
+def students ():
+
+    return Response(json.dumps(students), mimetype='application/json')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
