@@ -7,6 +7,8 @@ import os # importing operating system module
 import pymongo
 import json
 from bson.objectid import ObjectId
+from bson.json_util import dumps
+from datetime import datetime
 MONGODB_URI = 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/?retryWrites=true&w=majority&appName=30DaysOfPython'
 client = pymongo.MongoClient(MONGODB_URI)
 # Creating database
@@ -95,12 +97,149 @@ def analyze_text(text):
     
     return results
 
-#-- api estudiantes
+#-- api estudiantes --
 
-@app.route('/api/v1.0/students', methods = ['GET'])
-def students ():
+#-- obtener estudiantes
 
-    return Response(json.dumps(students), mimetype='application/json')
+@app.route('/api/v1.0/students', methods=['GET'])
+def students():
+    students_data = list(db.students.find({}))
+    
+    return Response(dumps(students_data), mimetype='application/json')
+
+@app.route('/api/v1.0/students/<id>', methods=['GET'])
+def single_student(id):
+    student = db.students.find_one({'_id': ObjectId(id)})
+    return Response(dumps(student), mimetype='application/json')
+
+#-- crear estudiantes
+
+@app.route('/api/v1.0/students', methods=['POST'])
+def create_student():
+    try:
+        # Obtener datos formulario
+        name = request.form.get('name')
+        country = request.form.get('country')
+        city = request.form.get('city')
+        skills_str = request.form.get('skills', '')
+        skills = [skill.strip() for skill in skills_str.split(',')] if skills_str else []
+        bio = request.form.get('bio', '')
+        birthyear = request.form.get('birthyear')
+        
+        if not name or not country or not city:
+            return Response(
+                dumps({"error": "Name, country and city are required"}),
+                status=400,
+                mimetype='application/json'
+            )
+        
+        # Crear documento
+        student = {
+            'name': name,
+            'country': country,
+            'city': city,
+            'birthyear': birthyear,
+            'skills': skills,
+            'bio': bio,
+            'created_at': datetime.now()
+        }
+        
+        # Insertar en bd
+        result = db.students.insert_one(student)
+        # retornar estudiante
+        created_student = db.students.find_one({'_id': result.inserted_id})
+        
+        return Response(
+            dumps(created_student),
+            status=201,
+            mimetype='application/json'
+        )
+    
+    except Exception as e:
+        return Response(
+            dumps({"error": str(e)}),
+            status=500,
+            mimetype='application/json'
+        )
+    
+# --Actualizar estudiante
+
+@app.route('/api/v1.0/students/<id>', methods=['PUT'])
+def update_student(id):
+    try:
+        query = {"_id": ObjectId(id)}
+        
+        # Verificar existencia
+        if not db.students.find_one(query):
+            return Response(dumps({"error": "Student not found"}), status=404, mimetype='application/json')
+        
+        # Obtener datos del formulario
+        name = request.form.get('name')
+        country = request.form.get('country')
+        city = request.form.get('city')
+        skills_str = request.form.get('skills', '')
+        skills = [skill.strip() for skill in skills_str.split(',')] if skills_str else []
+        bio = request.form.get('bio', '')
+        birthyear = request.form.get('birthyear')
+        
+        # Crear documento con los campos a actualizar
+        student = {
+            'name': name,
+            'country': country,
+            'city': city,
+            'birthyear': birthyear,
+            'skills': skills,
+            'bio': bio,
+            'updated_at': datetime.now()
+        }
+        
+        # Actualizar en bd
+        db.students.update_one(query, {'$set': student})
+        
+        # Obtener y devolver documento actualizado
+        updated_student = db.students.find_one(query)
+        return Response(dumps(updated_student), mimetype='application/json')
+    
+    except Exception as e:
+        return Response(dumps({"error": str(e)}), status=500, mimetype='application/json')
+    
+#-- borrar estudiante
+
+@app.route('/api/v1.0/students/<id>', methods=['DELETE'])
+def delete_student(id):
+    try:
+        query = {"_id": ObjectId(id)}
+        
+        # Verificar existencia
+        student = db.students.find_one(query)
+        if not student:
+            return Response(
+                dumps({"error": "Student not found"}),
+                status=404,
+                mimetype='application/json'
+            )
+        result = db.students.delete_one(query)
+        
+        # Verificar eliminación
+        if result.deleted_count == 1:
+            return Response(
+                dumps({"message": "Student deleted successfully"}),
+                status=200,
+                mimetype='application/json'
+            )
+        else:
+            return Response(
+                dumps({"error": "Failed to delete student"}),
+                status=500,
+                mimetype='application/json'
+            )
+    
+    except Exception as e:
+        return Response(
+            dumps({"error": str(e)}),
+            status=500,
+            mimetype='application/json'
+        )
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
