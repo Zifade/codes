@@ -97,6 +97,13 @@ def analyze_text(text):
     
     return results
 
+#-- manage students
+
+@app.route('/manage-students')
+def home ():
+    name='Students'
+    return render_template('manage_students.html', name=name, title='Students')
+
 #-- api estudiantes --
 
 #-- obtener estudiantes
