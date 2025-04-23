@@ -98,11 +98,16 @@ def analyze_text(text):
     return results
 
 #-- manage students
+@app.route('/manage-student')
+def manage_student(): 
+    students_data = list(db.students.find({}))
+    return render_template('manage_student.html', students=students_data)
 
-@app.route('/manage-students')
-def home ():
-    name='Students'
-    return render_template('manage_students.html', name=name, title='Students')
+#-- add students
+@app.route('/add-student')
+def add_student(): 
+    return render_template('add_student.html')
+
 
 #-- api estudiantes --
 
@@ -173,43 +178,106 @@ def create_student():
 
 @app.route('/api/v1.0/students/<id>', methods=['PUT'])
 def update_student(id):
+    print(f"Received ID: {id}, Type: {type(id)}")
     try:
-        query = {"_id": ObjectId(id)}
+        # Asegurarse de que el ID sea una cadena válida
+        if not id or not isinstance(id, str):
+            return Response(
+                dumps({"error": "Invalid student ID format"}),
+                status=400,
+                mimetype='application/json'
+            )
         
-        # Verificar existencia
-        if not db.students.find_one(query):
-            return Response(dumps({"error": "Student not found"}), status=404, mimetype='application/json')
+        # Verificar si el ID tiene el formato correcto de ObjectId
+        if not ObjectId.is_valid(id):
+            return Response(
+                dumps({"error": f"'{id}' is not a valid ObjectId"}),
+                status=400,
+                mimetype='application/json'
+            )
         
+        # Crear el ObjectId correctamente
+        object_id = ObjectId(id)
+        
+        # Verificar si el estudiante existe
+        query = {"_id": object_id}
+        existing_student = db.students.find_one(query)
+        
+        if not existing_student:
+            return Response(
+                dumps({"error": "Student not found"}),
+                status=404,
+                mimetype='application/json'
+            )
         # Obtener datos del formulario
         name = request.form.get('name')
         country = request.form.get('country')
         city = request.form.get('city')
+        
+        # Procesar skills (dividir por comas)
         skills_str = request.form.get('skills', '')
         skills = [skill.strip() for skill in skills_str.split(',')] if skills_str else []
-        bio = request.form.get('bio', '')
+        
         birthyear = request.form.get('birthyear')
+        bio = request.form.get('bio')
         
         # Crear documento con los campos a actualizar
-        student = {
-            'name': name,
-            'country': country,
-            'city': city,
-            'birthyear': birthyear,
-            'skills': skills,
-            'bio': bio,
-            'updated_at': datetime.now()
-        }
+        update_data = {}
         
-        # Actualizar en bd
-        db.students.update_one(query, {'$set': student})
+        # Solo incluir campos que no sean None o vacíos
+        if name:
+            update_data['name'] = name
+        if country:
+            update_data['country'] = country
+        if city:
+            update_data['city'] = city
+        if skills:
+            update_data['skills'] = skills
+        if birthyear:
+            update_data['birthyear'] = int(birthyear)
+        if bio:
+            update_data['bio'] = bio
         
-        # Obtener y devolver documento actualizado
-        updated_student = db.students.find_one(query)
-        return Response(dumps(updated_student), mimetype='application/json')
+        # Añadir timestamp de actualización
+        update_data['updated_at'] = datetime.now()
+        
+        # Si no hay datos para actualizar
+        if not update_data or len(update_data) <= 1:  # Solo tiene updated_at
+            return Response(
+                dumps({"error": "No data provided for update"}),
+                status=400,
+                mimetype='application/json'
+            )
+        
+        # IMPORTANTE: Usar $set para actualizar solo los campos especificados
+        result = db.students.update_one(
+            query,
+            {'$set': update_data}
+        )
+        
+        if result.modified_count > 0:
+            # Obtener el estudiante actualizado
+            updated_student = db.students.find_one(query)
+            return Response(
+                dumps(updated_student),
+                status=200,
+                mimetype='application/json'
+            )
+        else:
+            # Si no se modificó nada (quizás se enviaron los mismos datos)
+            return Response(
+                dumps({"message": "No changes were made"}),
+                status=200,
+                mimetype='application/json'
+            )
     
     except Exception as e:
-        return Response(dumps({"error": str(e)}), status=500, mimetype='application/json')
-    
+        print(f"Error updating student: {str(e)}")  # Log para depuración
+        return Response(
+            dumps({"error": str(e)}),
+            status=500,
+            mimetype='application/json'
+        )    
 #-- borrar estudiante
 
 @app.route('/api/v1.0/students/<id>', methods=['DELETE'])

@@ -1,0 +1,107 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="container">
+  <h1>Add New Student</h1>
+  
+  <div class="form-container">
+    <form id="addStudentForm">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="skills">Skills (comma separated):</label>
+        <input type="text" id="skills" name="skills">
+      </div>
+      
+      <div class="form-group">
+        <label for="birthyear">Birth Year:</label>
+        <select id="birthyear" name="birthyear" class="form-select">
+          <option value="">Select Year</option>
+          <script>
+            const currentYear = new Date().getFullYear();
+            for (let year = currentYear; year >= 1900; year--) {
+              document.write(`<option value="${year}">${year}</option>`);
+            }
+          </script>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio" rows="4"></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn">Add Student</button>
+        <a href="/manage-student" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Mensaje de confirmación -->
+  <div id="confirmationMessage" class="confirmation-message"></div>
+</div>
+
+<script>
+  // Variables globales
+  const apiBaseUrl = '/api/v1.0/students';
+  const confirmationMessage = document.getElementById('confirmationMessage');
+  
+  // Manejar el envío del formulario
+  document.getElementById('addStudentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    // Enviar datos del nuevo estudiante
+    fetch(apiBaseUrl, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Mostrar mensaje de éxito
+      showMessage('Student added successfully!', 'success');
+      
+      // Limpiar el formulario
+      this.reset();
+      
+      // Redirigir a la página de gestión después de un breve retraso
+      setTimeout(() => {
+        window.location.href = '/manage-student';
+      }, 1500);
+    })
+    .catch(error => {
+      showMessage(`Error adding student: ${error.message}`, 'error');
+    });
+  });
+  
+  // Función para mostrar mensajes
+  function showMessage(message, type) {
+    confirmationMessage.textContent = message;
+    confirmationMessage.className = `confirmation-message ${type}`;
+    confirmationMessage.style.display = "block";
+    
+    // Ocultar el mensaje después de 3 segundos
+    setTimeout(() => {
+      confirmationMessage.style.display = "none";
+    }, 3000);
+  }
+</script>
+{% endblock %}
