@@ -1,6 +1,7 @@
 # let's import the flask
 
 from flask import Flask, render_template, request, Response, redirect, url_for
+from flask import request, jsonify
 import re
 from collections import Counter
 import os # importing operating system module
@@ -178,106 +179,36 @@ def create_student():
 
 @app.route('/api/v1.0/students/<id>', methods=['PUT'])
 def update_student(id):
-    print(f"Received ID: {id}, Type: {type(id)}")
-    try:
-        # Asegurarse de que el ID sea una cadena válida
-        if not id or not isinstance(id, str):
-            return Response(
-                dumps({"error": "Invalid student ID format"}),
-                status=400,
-                mimetype='application/json'
-            )
-        
-        # Verificar si el ID tiene el formato correcto de ObjectId
-        if not ObjectId.is_valid(id):
-            return Response(
-                dumps({"error": f"'{id}' is not a valid ObjectId"}),
-                status=400,
-                mimetype='application/json'
-            )
-        
-        # Crear el ObjectId correctamente
-        object_id = ObjectId(id)
-        
-        # Verificar si el estudiante existe
-        query = {"_id": object_id}
-        existing_student = db.students.find_one(query)
-        
-        if not existing_student:
-            return Response(
-                dumps({"error": "Student not found"}),
-                status=404,
-                mimetype='application/json'
-            )
-        # Obtener datos del formulario
-        name = request.form.get('name')
-        country = request.form.get('country')
-        city = request.form.get('city')
-        
-        # Procesar skills (dividir por comas)
-        skills_str = request.form.get('skills', '')
-        skills = [skill.strip() for skill in skills_str.split(',')] if skills_str else []
-        
-        birthyear = request.form.get('birthyear')
-        bio = request.form.get('bio')
-        
-        # Crear documento con los campos a actualizar
-        update_data = {}
-        
-        # Solo incluir campos que no sean None o vacíos
-        if name:
-            update_data['name'] = name
-        if country:
-            update_data['country'] = country
-        if city:
-            update_data['city'] = city
-        if skills:
-            update_data['skills'] = skills
-        if birthyear:
-            update_data['birthyear'] = int(birthyear)
-        if bio:
-            update_data['bio'] = bio
-        
-        # Añadir timestamp de actualización
-        update_data['updated_at'] = datetime.now()
-        
-        # Si no hay datos para actualizar
-        if not update_data or len(update_data) <= 1:  # Solo tiene updated_at
-            return Response(
-                dumps({"error": "No data provided for update"}),
-                status=400,
-                mimetype='application/json'
-            )
-        
-        # IMPORTANTE: Usar $set para actualizar solo los campos especificados
-        result = db.students.update_one(
-            query,
-            {'$set': update_data}
-        )
-        
-        if result.modified_count > 0:
-            # Obtener el estudiante actualizado
-            updated_student = db.students.find_one(query)
-            return Response(
-                dumps(updated_student),
-                status=200,
-                mimetype='application/json'
-            )
-        else:
-            # Si no se modificó nada (quizás se enviaron los mismos datos)
-            return Response(
-                dumps({"message": "No changes were made"}),
-                status=200,
-                mimetype='application/json'
-            )
+    print("Received ID:", id)
     
-    except Exception as e:
-        print(f"Error updating student: {str(e)}")  # Log para depuración
-        return Response(
-            dumps({"error": str(e)}),
-            status=500,
-            mimetype='application/json'
-        )    
+    try:
+        obj_id = ObjectId(id)
+    except:
+        return jsonify({"error": "Invalid student ID"}), 400
+
+    # Obtener los datos del formulario
+    name = request.form.get('name')
+    country = request.form.get('country')
+    city = request.form.get('city')
+    skills = request.form.get('skills', '').split(',')
+    birthyear = request.form.get('birthyear')
+    bio = request.form.get('bio')
+
+    update_data = {
+        "name": name,
+        "country": country,
+        "city": city,
+        "skills": [s.strip() for s in skills],
+        "birthyear": int(birthyear) if birthyear else None,
+        "bio": bio
+    }
+
+    result = db.students.update_one({"_id": obj_id}, {"$set": update_data})
+
+    if result.matched_count == 0:
+        return jsonify({"error": "Student not found"}), 404
+
+    return jsonify({"message": "Student updated successfully"})
 #-- borrar estudiante
 
 @app.route('/api/v1.0/students/<id>', methods=['DELETE'])

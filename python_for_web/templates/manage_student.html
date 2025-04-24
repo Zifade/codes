@@ -1,4 +1,5 @@
-{% extends 'layout.html' %} {% block content %}
+{% extends 'layout.html' %} 
+{% block content %}
 <div class="container">
   <h1>Manage Students</h1>
   
@@ -35,7 +36,7 @@
   </div>
   
   <!-- Modal para editar estudiante -->
-<div id="editModal" class="modal">
+  <div id="editModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Edit Student</h2>
@@ -62,7 +63,6 @@
           <select id="birthyear" name="birthyear" class="form-select">
             <option value="">Select Year</option>
             <script>
-              // Generar opciones para años desde 1900 hasta el año actual
               const currentYear = new Date().getFullYear();
               for (let year = currentYear; year >= 1900; year--) {
                 document.write(`<option value="${year}">${year}</option>`);
@@ -82,51 +82,43 @@
     </div>
   </div>
   
-  <!-- Mensaje de confirmación -->
   <div id="confirmationMessage" class="confirmation-message"></div>
 </div>
 
 <script>
-    // Variables globales
-    const apiBaseUrl = '/api/v1.0/students';
-    const modal = document.getElementById('editModal');
-    const closeBtn = document.querySelector('.close');
-    const confirmationMessage = document.getElementById('confirmationMessage');
-    
-    // Función para cerrar el modal (NUEVA)
-    function closeModal() {
-      modal.style.display = "none";
+  const apiBaseUrl = '/api/v1.0/students';
+  const modal = document.getElementById('editModal');
+  const closeBtn = document.querySelector('.close');
+  const confirmationMessage = document.getElementById('confirmationMessage');
+
+  function closeModal() {
+    modal.style.display = "none";
+  }
+
+  closeBtn.onclick = function () {
+    closeModal();
+  }
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      closeModal();
     }
-    
-    // Cerrar el modal al hacer clic en X
-    closeBtn.onclick = function() {
-      closeModal();  // MODIFICADO: Usa la nueva función
-    }
-    
-    // Cerrar el modal al hacer clic fuera de él
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        closeModal();  // MODIFICADO: Usa la nueva función
-      }
-    }
-    
-    // Función para editar un estudiante
-    function editStudent(id) {
-      // Obtener datos del estudiante
+  }
+
+  function editStudent(id) {
       fetch(`${apiBaseUrl}/${id}`)
         .then(response => response.json())
         .then(student => {
-          // Llenar el formulario con los datos del estudiante
-          document.getElementById('studentId').value = student._id;
+          // Aseguramos que el _id se almacene como string en el campo oculto
+          document.getElementById('studentId').value = student._id.$oid || student._id;
+
           document.getElementById('name').value = student.name || '';
           document.getElementById('country').value = student.country || '';
           document.getElementById('city').value = student.city || '';
           document.getElementById('skills').value = student.skills ? student.skills.join(', ') : '';
-          
-          // MODIFICADO: Manejo del dropdown de birthyear
+
           const birthyearSelect = document.getElementById('birthyear');
           if (student.birthyear) {
-            // Buscar la opción con el valor correspondiente
             for (let i = 0; i < birthyearSelect.options.length; i++) {
               if (birthyearSelect.options[i].value == student.birthyear) {
                 birthyearSelect.selectedIndex = i;
@@ -134,99 +126,76 @@
               }
             }
           } else {
-            birthyearSelect.selectedIndex = 0; // Seleccionar "Select Year"
+            birthyearSelect.selectedIndex = 0;
           }
-          
+
           document.getElementById('bio').value = student.bio || '';
-          
-          // Mostrar el modal
           modal.style.display = "block";
         })
         .catch(error => {
           showMessage(`Error loading student data: ${error.message}`, 'error');
         });
     }
-    
-    // Manejar el envío del formulario de edición
+
+    // Manejo del submit
     document.getElementById('editForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Obtener el ID del estudiante
-    const id = document.getElementById('studentId').value.trim();
-    
-    if (!id) {
+      e.preventDefault();
+
+      const id = document.getElementById('studentId').value.trim();
+
+      if (!id) {
         showMessage('Error: Student ID is missing', 'error');
         return;
-    }
-    
-    // Crear FormData con los datos del formulario
-    const formData = new FormData(this);
-    
-    console.log('Updating student with ID:', id);
-    
-    // Enviar la solicitud PUT
-    fetch(`/api/v1.0/students/${id}`, {
+      }
+
+      const formData = new FormData(this);
+
+      fetch(`/api/v1.0/students/${id}`, {
         method: 'PUT',
         body: formData
-    })
-    .then(response => {
+      })
+      .then(response => {
         if (!response.ok) {
-            return response.json().then(err => {
-                throw new Error(err.error || 'Error updating student');
-            });
+          return response.json().then(err => {
+            throw new Error(err.error || 'Error updating student');
+          });
         }
         return response.json();
-    })
-    .then(data => {
-        console.log('Server response:', data);
-        
-        // Cerrar el modal
+      })
+      .then(data => {
         closeModal();
-        
-        // Mostrar mensaje de éxito
         showMessage('Student updated successfully!', 'success');
-        
-        // Recargar la página para mostrar los datos actualizados
-        setTimeout(() => {
-            location.reload();
-        }, 1500);
-    })
-    .catch(error => {
-        console.error('Error:', error);
+        setTimeout(() => location.reload(), 1500);
+      })
+      .catch(error => {
         showMessage(`Error updating student: ${error.message}`, 'error');
+      });
     });
-});
-    
-    // Función para eliminar un estudiante
-    function deleteStudent(id) {
-      if (confirm('Are you sure you want to delete this student?')) {
-        fetch(`${apiBaseUrl}/${id}`, {
-          method: 'DELETE'
-        })
+
+
+  function deleteStudent(id) {
+    if (confirm('Are you sure you want to delete this student?')) {
+      fetch(`${apiBaseUrl}/${id}`, {
+        method: 'DELETE'
+      })
         .then(response => response.json())
         .then(data => {
-          // Mostrar mensaje de éxito
-          showMessage('Student deleted successfully!', 'success');
-          
-          // Eliminar la fila de la tabla
-          document.querySelector(`tr[data-id="${id}"]`).remove();
+        showMessage('Student deleted successfully!', 'success');
+        document.querySelector(`tr[data-id="${id}"]`).remove();
         })
         .catch(error => {
           showMessage(`Error deleting student: ${error.message}`, 'error');
         });
-      }
     }
-    
-    // Función para mostrar mensajes
-    function showMessage(message, type) {
-      confirmationMessage.textContent = message;
-      confirmationMessage.className = `confirmation-message ${type}`;
-      confirmationMessage.style.display = "block";
-      
-      // Ocultar el mensaje después de 3 segundos
-      setTimeout(() => {
-        confirmationMessage.style.display = "none";
-      }, 3000);
-    }
-  </script>
+  }
+
+  function showMessage(message, type) {
+    confirmationMessage.textContent = message;
+    confirmationMessage.className = `confirmation-message ${type}`;
+    confirmationMessage.style.display = "block";
+    setTimeout(() => {
+      confirmationMessage.style.display = "none";
+    }, 3000);
+  }
+</script>
 {% endblock %}
