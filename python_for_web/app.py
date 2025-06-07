@@ -20,15 +20,16 @@ _db = None
 def get_db():
     global _client, _db
     if _client is None:
-        # URI simplificada sin parámetros SSL complejos
-        MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/thirty_days_of_python')
+        MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/thirty_days_of_python?ssl=true&ssl_cert_reqs=CERT_NONE')
         
         _client = pymongo.MongoClient(
             MONGODB_URI,
-            serverSelectionTimeoutMS=10000,  # 10 segundos
+            serverSelectionTimeoutMS=10000,
             connectTimeoutMS=10000,
             socketTimeoutMS=10000,
-            maxPoolSize=1
+            maxPoolSize=1,
+            ssl=True,
+            ssl_cert_reqs=None  # Menos restrictivo para SSL
         )
         _db = _client.thirty_days_of_python
     return _db
