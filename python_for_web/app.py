@@ -26,6 +26,7 @@ def get_db():
         _client = pymongo.MongoClient(MONGODB_URI)
         _db = _client.thirty_days_of_python
     return _db
+
 #-- home page
 @app.route('/')
 def home(): 
