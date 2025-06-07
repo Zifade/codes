@@ -1,5 +1,4 @@
 # let's import the flask
-
 from flask import Flask, render_template, request, Response, redirect, url_for
 from flask import request, jsonify
 import re
@@ -10,16 +9,33 @@ import json
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
-MONGODB_URI = 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/?retryWrites=true&w=majority&appName=30DaysOfPython'
-client = pymongo.MongoClient(MONGODB_URI)
-# Creating database
-db = client.thirty_days_of_python
-
+import certifi
 
 app = Flask(__name__)
 
-#-- home page
+# Optimización para serverless - conexión lazy
+_client = None
+_db = None
 
+def get_db():
+    global _client, _db
+    if _client is None:
+        # Usar variable de entorno (más seguro)
+        MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/?retryWrites=true&w=majority&appName=30DaysOfPython')
+        
+        # Conexión optimizada para serverless
+        _client = pymongo.MongoClient(
+            MONGODB_URI,
+            serverSelectionTimeoutMS=3000,  # 3 segundos máximo
+            connectTimeoutMS=3000,          # 3 segundos máximo
+            socketTimeoutMS=3000,           # 3 segundos máximo
+            maxPoolSize=1,                  # Pool pequeño para serverless
+            tlsCAFile=certifi.where()       # Certificados SSL
+        )
+        _db = _client.thirty_days_of_python
+    return _db
+
+#-- home page
 @app.route('/')
 def home(): 
     back_techs = ['Python','Flask','MongoDB']
@@ -28,14 +44,12 @@ def home():
     return render_template('home.html', back_techs=back_techs, front_techs=front_techs, name=name, title='Home')
 
 #-- about page
-
 @app.route('/about')
 def about():
     name = '30 Days Of Python Programming'
     return render_template('about.html', name=name, title='About Us')
 
 #-- page de resultados del analisis de texto
-
 @app.route('/result')
 def result():
     if not hasattr(app, 'analysis_results'):
@@ -46,7 +60,6 @@ def result():
     return render_template('result.html', results=results, title='Analysis Results')
 
 #-- text analizer page
-
 @app.route('/post', methods=['GET','POST'])
 def post():
     name = 'Text Analyzer'
@@ -62,7 +75,6 @@ def post():
         return redirect(url_for('result'))
 
 #-- text analyzer backend logic
-
 def analyze_text(text):
     """
     Analiza el texto para contar palabras, caracteres y palabras más frecuentes.
@@ -101,35 +113,55 @@ def analyze_text(text):
 #-- manage students
 @app.route('/manage-student')
 def manage_student(): 
-    students_data = list(db.students.find({}))
-    return render_template('manage_student.html', students=students_data)
+    try:
+        db = get_db()
+        students_data = list(db.students.find({}).limit(50))  # Limitar resultados
+        return render_template('manage_student.html', students=students_data)
+    except Exception as e:
+        return f"Error connecting to database: {str(e)}", 500
 
 #-- add students
 @app.route('/add-student')
 def add_student(): 
     return render_template('add_student.html')
 
-
 #-- api estudiantes --
 
 #-- obtener estudiantes
-
 @app.route('/api/v1.0/students', methods=['GET'])
 def students():
-    students_data = list(db.students.find({}))
-    
-    return Response(dumps(students_data), mimetype='application/json')
+    try:
+        db = get_db()
+        students_data = list(db.students.find({}).limit(100))  # Limitar a 100 estudiantes
+        return Response(dumps(students_data), mimetype='application/json')
+    except Exception as e:
+        return Response(
+            dumps({"error": f"Database connection failed: {str(e)}"}),
+            status=500,
+            mimetype='application/json'
+        )
 
 @app.route('/api/v1.0/students/<id>', methods=['GET'])
 def single_student(id):
-    student = db.students.find_one({'_id': ObjectId(id)})
-    return Response(dumps(student), mimetype='application/json')
+    try:
+        db = get_db()
+        student = db.students.find_one({'_id': ObjectId(id)})
+        if not student:
+            return Response(dumps({"error": "Student not found"}), status=404, mimetype='application/json')
+        return Response(dumps(student), mimetype='application/json')
+    except Exception as e:
+        return Response(
+            dumps({"error": str(e)}),
+            status=500,
+            mimetype='application/json'
+        )
 
 #-- crear estudiantes
-
 @app.route('/api/v1.0/students', methods=['POST'])
 def create_student():
     try:
+        db = get_db()
+        
         # Obtener datos formulario
         name = request.form.get('name')
         country = request.form.get('country')
@@ -174,46 +206,46 @@ def create_student():
             status=500,
             mimetype='application/json'
         )
-    
-# --Actualizar estudiante
 
+# --Actualizar estudiante
 @app.route('/api/v1.0/students/<id>', methods=['PUT'])
 def update_student(id):
-    print("Received ID:", id)
-    
     try:
+        db = get_db()
         obj_id = ObjectId(id)
-    except:
-        return jsonify({"error": "Invalid student ID"}), 400
+        
+        # Obtener los datos del formulario
+        name = request.form.get('name')
+        country = request.form.get('country')
+        city = request.form.get('city')
+        skills = request.form.get('skills', '').split(',')
+        birthyear = request.form.get('birthyear')
+        bio = request.form.get('bio')
 
-    # Obtener los datos del formulario
-    name = request.form.get('name')
-    country = request.form.get('country')
-    city = request.form.get('city')
-    skills = request.form.get('skills', '').split(',')
-    birthyear = request.form.get('birthyear')
-    bio = request.form.get('bio')
+        update_data = {
+            "name": name,
+            "country": country,
+            "city": city,
+            "skills": [s.strip() for s in skills],
+            "birthyear": int(birthyear) if birthyear else None,
+            "bio": bio
+        }
 
-    update_data = {
-        "name": name,
-        "country": country,
-        "city": city,
-        "skills": [s.strip() for s in skills],
-        "birthyear": int(birthyear) if birthyear else None,
-        "bio": bio
-    }
+        result = db.students.update_one({"_id": obj_id}, {"$set": update_data})
 
-    result = db.students.update_one({"_id": obj_id}, {"$set": update_data})
+        if result.matched_count == 0:
+            return jsonify({"error": "Student not found"}), 404
 
-    if result.matched_count == 0:
-        return jsonify({"error": "Student not found"}), 404
+        return jsonify({"message": "Student updated successfully"})
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-    return jsonify({"message": "Student updated successfully"})
 #-- borrar estudiante
-
 @app.route('/api/v1.0/students/<id>', methods=['DELETE'])
 def delete_student(id):
     try:
+        db = get_db()
         query = {"_id": ObjectId(id)}
         
         # Verificar existencia
