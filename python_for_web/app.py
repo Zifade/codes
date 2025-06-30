@@ -22,8 +22,16 @@ def get_db():
     if _client is None:
         MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb+srv://jorgelutz1:XHIz5HzUCo1cXJ7t@30daysofpython.e9nc9fv.mongodb.net/thirty_days_of_python')
         
-        # Conexión ultra-simple
-        _client = pymongo.MongoClient(MONGODB_URI)
+        # Conexión ultra-rápida
+        _client = pymongo.MongoClient(
+            MONGODB_URI,
+            serverSelectionTimeoutMS=3000,  # 3 segundos máximo
+            connectTimeoutMS=3000,
+            socketTimeoutMS=3000,
+            maxPoolSize=1,
+            minPoolSize=0,
+            maxIdleTimeMS=30000
+        )
         _db = _client.thirty_days_of_python
     return _db
 
