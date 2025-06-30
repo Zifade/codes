@@ -10,12 +10,18 @@ from bson.objectid import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
 import certifi
+import time  # ← AÑADIR ESTA IMPORTACIÓN
 
 app = Flask(__name__)
 
 # Optimización para serverless - conexión lazy
 _client = None
 _db = None
+
+# ← AÑADIR ESTAS VARIABLES PARA EL CACHÉ
+_cache = {}
+_cache_time = {}
+CACHE_DURATION = 60  # 1 minuto
 
 def get_db():
     global _client, _db
@@ -110,12 +116,22 @@ def analyze_text(text):
     
     return results
 
-#-- manage students
+#-- manage students ← AQUÍ IMPLEMENTAR CACHÉ
 @app.route('/manage-student')
 def manage_student(): 
     try:
+        # Verificar caché
+        if 'manage_students' in _cache and time.time() - _cache_time.get('manage_students', 0) < CACHE_DURATION:
+            return render_template('manage_student.html', students=_cache['manage_students'])
+        
+        # Si no hay caché, consultar BD
         db = get_db()
-        students_data = list(db.students.find({}).limit(50))  # Limitar resultados
+        students_data = list(db.students.find({}).limit(20))  # Reducir a 20
+        
+        # Guardar en caché
+        _cache['manage_students'] = students_data
+        _cache_time['manage_students'] = time.time()
+        
         return render_template('manage_student.html', students=students_data)
     except Exception as e:
         return f"Error connecting to database: {str(e)}", 500
@@ -127,12 +143,22 @@ def add_student():
 
 #-- api estudiantes --
 
-#-- obtener estudiantes
+#-- obtener estudiantes ← AQUÍ IMPLEMENTAR CACHÉ
 @app.route('/api/v1.0/students', methods=['GET'])
 def students():
     try:
+        # Verificar caché
+        if 'students' in _cache and time.time() - _cache_time.get('students', 0) < CACHE_DURATION:
+            return Response(dumps(_cache['students']), mimetype='application/json')
+        
+        # Si no hay caché, consultar BD
         db = get_db()
-        students_data = list(db.students.find({}).limit(100))  # Limitar a 100 estudiantes
+        students_data = list(db.students.find({}).limit(20))  # Reducir a 20
+        
+        # Guardar en caché
+        _cache['students'] = students_data
+        _cache_time['students'] = time.time()
+        
         return Response(dumps(students_data), mimetype='application/json')
     except Exception as e:
         return Response(
@@ -144,10 +170,20 @@ def students():
 @app.route('/api/v1.0/students/<id>', methods=['GET'])
 def single_student(id):
     try:
+        # Verificar caché individual
+        cache_key = f'student_{id}'
+        if cache_key in _cache and time.time() - _cache_time.get(cache_key, 0) < CACHE_DURATION:
+            return Response(dumps(_cache[cache_key]), mimetype='application/json')
+        
         db = get_db()
         student = db.students.find_one({'_id': ObjectId(id)})
         if not student:
             return Response(dumps({"error": "Student not found"}), status=404, mimetype='application/json')
+        
+        # Guardar en caché
+        _cache[cache_key] = student
+        _cache_time[cache_key] = time.time()
+        
         return Response(dumps(student), mimetype='application/json')
     except Exception as e:
         return Response(
@@ -156,7 +192,7 @@ def single_student(id):
             mimetype='application/json'
         )
 
-#-- crear estudiantes
+#-- crear estudiantes ← LIMPIAR CACHÉ CUANDO SE CREA
 @app.route('/api/v1.0/students', methods=['POST'])
 def create_student():
     try:
@@ -191,6 +227,13 @@ def create_student():
         
         # Insertar en bd
         result = db.students.insert_one(student)
+        
+        # ← LIMPIAR CACHÉ DESPUÉS DE CREAR
+        if 'students' in _cache:
+            del _cache['students']
+        if 'manage_students' in _cache:
+            del _cache['manage_students']
+        
         # retornar estudiante
         created_student = db.students.find_one({'_id': result.inserted_id})
         
@@ -207,7 +250,7 @@ def create_student():
             mimetype='application/json'
         )
 
-# --Actualizar estudiante
+# --Actualizar estudiante ← LIMPIAR CACHÉ CUANDO SE ACTUALIZA
 @app.route('/api/v1.0/students/<id>', methods=['PUT'])
 def update_student(id):
     try:
@@ -236,12 +279,18 @@ def update_student(id):
         if result.matched_count == 0:
             return jsonify({"error": "Student not found"}), 404
 
+        # ← LIMPIAR CACHÉ DESPUÉS DE ACTUALIZAR
+        cache_keys_to_remove = [key for key in _cache.keys() if key.startswith('student_') or key in ['students', 'manage_students']]
+        for key in cache_keys_to_remove:
+            if key in _cache:
+                del _cache[key]
+
         return jsonify({"message": "Student updated successfully"})
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-#-- borrar estudiante
+#-- borrar estudiante ← LIMPIAR CACHÉ CUANDO SE BORRA
 @app.route('/api/v1.0/students/<id>', methods=['DELETE'])
 def delete_student(id):
     try:
@@ -260,6 +309,12 @@ def delete_student(id):
         
         # Verificar eliminación
         if result.deleted_count == 1:
+            # ← LIMPIAR CACHÉ DESPUÉS DE BORRAR
+            cache_keys_to_remove = [key for key in _cache.keys() if key.startswith('student_') or key in ['students', 'manage_students']]
+            for key in cache_keys_to_remove:
+                if key in _cache:
+                    del _cache[key]
+            
             return Response(
                 dumps({"message": "Student deleted successfully"}),
                 status=200,
